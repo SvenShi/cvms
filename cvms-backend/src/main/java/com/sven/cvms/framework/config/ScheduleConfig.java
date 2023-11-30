@@ -1,18 +1,18 @@
-//package com.ruoyi.framework.config;
+// package com.ruoyi.framework.config;
 //
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.scheduling.quartz.SchedulerFactoryBean;
-//import javax.sql.DataSource;
-//import java.util.Properties;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+// import javax.sql.DataSource;
+// import java.util.Properties;
 //
 ///**
 // * 定时任务配置（单机部署建议默认走内存，如需集群需要创建qrtz数据库表/打开类注释）
-// * 
+// *
 // * @author ruoyi
 // */
 //@Configuration
-//public class ScheduleConfig
+// public class ScheduleConfig
 //{
 //    @Bean
 //    public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource)

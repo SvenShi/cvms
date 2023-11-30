@@ -5,8 +5,7 @@ package com.sven.cvms.framework.aspectj.lang.enums;
  *
  * @author ruoyi
  */
-public enum DataSourceType
-{
+public enum DataSourceType {
     /**
      * 主库
      */

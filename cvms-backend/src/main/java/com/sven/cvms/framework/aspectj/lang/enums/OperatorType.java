@@ -5,8 +5,7 @@ package com.sven.cvms.framework.aspectj.lang.enums;
  *
  * @author ruoyi
  */
-public enum OperatorType
-{
+public enum OperatorType {
     /**
      * 其它
      */

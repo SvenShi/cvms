@@ -1,25 +1,25 @@
 package com.sven.cvms.project.common;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import com.sven.cvms.framework.web.domain.AjaxResult;
-import jakarta.annotation.Resource;
-import javax.imageio.ImageIO;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.FastByteArrayOutputStream;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.google.code.kaptcha.Producer;
 import com.sven.cvms.common.constant.CacheConstants;
 import com.sven.cvms.common.constant.Constants;
 import com.sven.cvms.common.utils.sign.Base64;
 import com.sven.cvms.common.utils.uuid.IdUtils;
 import com.sven.cvms.framework.redis.RedisCache;
+import com.sven.cvms.framework.web.domain.AjaxResult;
 import com.sven.cvms.project.system.service.ISysConfigService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.FastByteArrayOutputStream;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 验证码操作处理
@@ -27,8 +27,7 @@ import com.sven.cvms.project.system.service.ISysConfigService;
  * @author ruoyi
  */
 @RestController
-public class CaptchaController
-{
+public class CaptchaController {
     @jakarta.annotation.Resource(name = "captchaProducer")
     private Producer captchaProducer;
 
@@ -49,13 +48,11 @@ public class CaptchaController
      * 生成验证码
      */
     @GetMapping("/captchaImage")
-    public AjaxResult getCode(HttpServletResponse response) throws IOException
-    {
+    public AjaxResult getCode(HttpServletResponse response) throws IOException {
         AjaxResult ajax = AjaxResult.success();
         boolean captchaEnabled = configService.selectCaptchaEnabled();
         ajax.put("captchaEnabled", captchaEnabled);
-        if (!captchaEnabled)
-        {
+        if (!captchaEnabled) {
             return ajax;
         }
 
@@ -67,15 +64,12 @@ public class CaptchaController
         BufferedImage image = null;
 
         // 生成验证码
-        if ("math".equals(captchaType))
-        {
+        if ("math".equals(captchaType)) {
             String capText = captchaProducerMath.createText();
             capStr = capText.substring(0, capText.lastIndexOf("@"));
             code = capText.substring(capText.lastIndexOf("@") + 1);
             image = captchaProducerMath.createImage(capStr);
-        }
-        else if ("char".equals(captchaType))
-        {
+        } else if ("char".equals(captchaType)) {
             capStr = code = captchaProducer.createText();
             image = captchaProducer.createImage(capStr);
         }
@@ -83,12 +77,9 @@ public class CaptchaController
         redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
         // 转换流信息写出
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();
-        try
-        {
+        try {
             ImageIO.write(image, "jpg", os);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             return AjaxResult.error(e.getMessage());
         }
 

@@ -1,20 +1,9 @@
 package com.sven.cvms.framework.security.service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import com.sven.cvms.common.utils.ServletUtils;
-import com.sven.cvms.common.utils.StringUtils;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 import com.sven.cvms.common.constant.CacheConstants;
 import com.sven.cvms.common.constant.Constants;
+import com.sven.cvms.common.utils.ServletUtils;
+import com.sven.cvms.common.utils.StringUtils;
 import com.sven.cvms.common.utils.ip.AddressUtils;
 import com.sven.cvms.common.utils.ip.IpUtils;
 import com.sven.cvms.common.utils.uuid.IdUtils;
@@ -23,8 +12,18 @@ import com.sven.cvms.framework.security.LoginUser;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * token验证处理
@@ -36,25 +35,18 @@ import javax.crypto.SecretKey;
 @Component
 @ConfigurationProperties(prefix = "token")
 public class TokenService {
+    protected static final long MILLIS_SECOND = 1000;
+    protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
     private static final Logger log = LoggerFactory.getLogger(TokenService.class);
-
+    private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
+    // 令牌秘钥
+    private final SecretKey SECRET = Jwts.SIG.HS256.key().build();
     // 令牌自定义标识
     @Setter
     private String header;
-
-    // 令牌秘钥
-    private final SecretKey SECRET = Jwts.SIG.HS256.key().build();
-
     // 令牌有效期（默认30分钟）
     @Setter
     private int expireTime;
-
-    protected static final long MILLIS_SECOND = 1000;
-
-    protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
-
-    private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
-
     @Autowired
     private RedisCache redisCache;
 

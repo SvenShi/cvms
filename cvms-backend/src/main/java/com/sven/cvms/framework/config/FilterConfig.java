@@ -1,8 +1,7 @@
 package com.sven.cvms.framework.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.sven.cvms.common.filter.RepeatableFilter;
+import com.sven.cvms.common.filter.XssFilter;
 import com.sven.cvms.common.utils.StringUtils;
 import jakarta.servlet.DispatcherType;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +9,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.sven.cvms.common.filter.RepeatableFilter;
-import com.sven.cvms.common.filter.XssFilter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Filter配置
@@ -19,19 +19,17 @@ import com.sven.cvms.common.filter.XssFilter;
  * @author ruoyi
  */
 @Configuration
-public class FilterConfig
-{
+public class FilterConfig {
     @Value("${xss.excludes}")
     private String excludes;
 
     @Value("${xss.urlPatterns}")
     private String urlPatterns;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Bean
     @ConditionalOnProperty(value = "xss.enabled", havingValue = "true")
-    public FilterRegistrationBean xssFilterRegistration()
-    {
+    public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setDispatcherTypes(DispatcherType.REQUEST);
         registration.setFilter(new XssFilter());
@@ -44,10 +42,9 @@ public class FilterConfig
         return registration;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Bean
-    public FilterRegistrationBean someFilterRegistration()
-    {
+    public FilterRegistrationBean someFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new RepeatableFilter());
         registration.addUrlPatterns("/*");

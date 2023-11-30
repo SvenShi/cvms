@@ -3,13 +3,13 @@ package com.sven.cvms.project.system.controller;
 import com.sven.cvms.common.utils.StringUtils;
 import com.sven.cvms.framework.security.RegisterBody;
 import com.sven.cvms.framework.security.service.SysRegisterService;
+import com.sven.cvms.framework.web.controller.BaseController;
 import com.sven.cvms.framework.web.domain.AjaxResult;
+import com.sven.cvms.project.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.sven.cvms.framework.web.controller.BaseController;
-import com.sven.cvms.project.system.service.ISysConfigService;
 
 /**
  * 注册验证
@@ -17,8 +17,7 @@ import com.sven.cvms.project.system.service.ISysConfigService;
  * @author ruoyi
  */
 @RestController
-public class SysRegisterController extends BaseController
-{
+public class SysRegisterController extends BaseController {
     @Autowired
     private SysRegisterService registerService;
 
@@ -26,11 +25,10 @@ public class SysRegisterController extends BaseController
     private ISysConfigService configService;
 
     @PostMapping("/register")
-    public AjaxResult register(@RequestBody
-                               RegisterBody user)
-    {
-        if (!("true".equals(configService.selectConfigByKey("sys.account.registerUser"))))
-        {
+    public AjaxResult register(
+            @RequestBody
+            RegisterBody user) {
+        if (!("true".equals(configService.selectConfigByKey("sys.account.registerUser")))) {
             return error("当前系统没有开启注册功能！");
         }
         String msg = registerService.register(user);

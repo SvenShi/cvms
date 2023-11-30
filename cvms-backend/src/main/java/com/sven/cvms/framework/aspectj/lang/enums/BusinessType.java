@@ -5,8 +5,7 @@ package com.sven.cvms.framework.aspectj.lang.enums;
  *
  * @author ruoyi
  */
-public enum BusinessType
-{
+public enum BusinessType {
     /**
      * 其它
      */

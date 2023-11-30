@@ -5,8 +5,7 @@ package com.sven.cvms.common.constant;
  *
  * @author ruoyi
  */
-public class CacheConstants
-{
+public class CacheConstants {
     /**
      * 登录用户 redis key
      */

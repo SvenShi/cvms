@@ -1,11 +1,12 @@
 package com.sven.cvms.project.monitor.service.impl;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.sven.cvms.project.monitor.domain.SysOperLog;
 import com.sven.cvms.project.monitor.mapper.SysOperLogMapper;
 import com.sven.cvms.project.monitor.service.ISysOperLogService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 操作日志 服务层处理
@@ -13,8 +14,7 @@ import com.sven.cvms.project.monitor.service.ISysOperLogService;
  * @author ruoyi
  */
 @Service
-public class SysOperLogServiceImpl implements ISysOperLogService
-{
+public class SysOperLogServiceImpl implements ISysOperLogService {
     @Autowired
     private SysOperLogMapper operLogMapper;
 
@@ -24,8 +24,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
      * @param operLog 操作日志对象
      */
     @Override
-    public void insertOperlog(SysOperLog operLog)
-    {
+    public void insertOperlog(SysOperLog operLog) {
         operLogMapper.insertOperlog(operLog);
     }
 
@@ -36,8 +35,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
      * @return 操作日志集合
      */
     @Override
-    public List<SysOperLog> selectOperLogList(SysOperLog operLog)
-    {
+    public List<SysOperLog> selectOperLogList(SysOperLog operLog) {
         return operLogMapper.selectOperLogList(operLog);
     }
 
@@ -48,8 +46,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
      * @return 结果
      */
     @Override
-    public int deleteOperLogByIds(Long[] operIds)
-    {
+    public int deleteOperLogByIds(Long[] operIds) {
         return operLogMapper.deleteOperLogByIds(operIds);
     }
 
@@ -60,8 +57,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
      * @return 操作日志对象
      */
     @Override
-    public SysOperLog selectOperLogById(Long operId)
-    {
+    public SysOperLog selectOperLogById(Long operId) {
         return operLogMapper.selectOperLogById(operId);
     }
 
@@ -69,8 +65,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService
      * 清空操作日志
      */
     @Override
-    public void cleanOperLog()
-    {
+    public void cleanOperLog() {
         operLogMapper.cleanOperLog();
     }
 }

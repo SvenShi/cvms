@@ -5,11 +5,9 @@ package com.sven.cvms.common.exception;
  *
  * @author ruoyi
  */
-public class DemoModeException extends RuntimeException
-{
+public class DemoModeException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public DemoModeException()
-    {
+    public DemoModeException() {
     }
 }
