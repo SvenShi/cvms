@@ -1,4 +1,4 @@
-// package com.ruoyi.framework.config;
+// package com.sven.cvms.framework.config;
 //
 // import org.springframework.context.annotation.Bean;
 // import org.springframework.context.annotation.Configuration;

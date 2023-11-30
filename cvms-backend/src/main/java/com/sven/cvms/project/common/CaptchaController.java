@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 public class CaptchaController {
-    @jakarta.annotation.Resource(name = "captchaProducer")
+    @Resource(name = "captchaProducer")
     private Producer captchaProducer;
 
     @Resource(name = "captchaProducerMath")
@@ -38,7 +38,7 @@ public class CaptchaController {
     private RedisCache redisCache;
 
     // 验证码类型
-    @Value("${ruoyi.captchaType}")
+    @Value("${cvms.captcha-type}")
     private String captchaType;
 
     @Autowired
