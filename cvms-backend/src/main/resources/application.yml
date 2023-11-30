@@ -89,7 +89,7 @@ token:
   expire-time: 30
 
 # MyBatis配置
-mybatis:
+mybatis-plus:
   # 搜索指定包别名
   typeAliasesPackage: com.sven.cvms.project.**.domain
   # 配置mapper的扫描，找到所有的mapper.xml映射文件

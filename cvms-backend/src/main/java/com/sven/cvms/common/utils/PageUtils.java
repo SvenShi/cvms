@@ -1,5 +1,6 @@
 package com.sven.cvms.common.utils;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sven.cvms.common.utils.sql.SqlUtil;
 import com.sven.cvms.framework.web.page.PageDomain;
@@ -20,7 +21,9 @@ public class PageUtils extends PageHelper {
         Integer pageSize = pageDomain.getPageSize();
         String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
         Boolean reasonable = pageDomain.getReasonable();
-        PageHelper.startPage(pageNum, pageSize, orderBy).setReasonable(reasonable);
+        try (Page<?> page = PageHelper.startPage(pageNum, pageSize, orderBy)) {
+            page.setReasonable(reasonable);
+        }
     }
 
     /**
