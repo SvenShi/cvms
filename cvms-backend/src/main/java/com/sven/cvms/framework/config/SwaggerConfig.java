@@ -18,18 +18,12 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI springShopOpenAPI() {
-        return new OpenAPI().info(new Info()
-                        .title("简历管理系统")
+        return new OpenAPI().info(new Info().title("简历管理系统")
                         .description("简历管理系统接口文档")
                         .version("v1")
-                        .license(new License()
-                                .name("Apache 2.0")
-                                .url("http://springdoc.org")))
+                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
                 .components(new Components().addSecuritySchemes("Authorization",
-                        new SecurityScheme()
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")));
+                        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
     }
 
 }

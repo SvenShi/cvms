@@ -53,8 +53,7 @@ public class TestController extends BaseController {
     }
 
     @Operation(summary = "新增用户")
-    @Parameters({
-            @Parameter(name = "userId", description = "用户id"),
+    @Parameters({@Parameter(name = "userId", description = "用户id"),
             @Parameter(name = "username", description = "用户名称"),
             @Parameter(name = "password", description = "用户密码"),
             @Parameter(name = "mobile", description = "用户手机")})

@@ -16,11 +16,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @EnableTransactionManagement(proxyTargetClass = true)
 @Configuration
-public class MybatisPlusConfig
-{
+public class MybatisPlusConfig {
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor()
-    {
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 分页插件
         interceptor.addInnerInterceptor(paginationInnerInterceptor());
@@ -34,8 +32,7 @@ public class MybatisPlusConfig
     /**
      * 分页插件，自动识别数据库类型
      */
-    public PaginationInnerInterceptor paginationInnerInterceptor()
-    {
+    public PaginationInnerInterceptor paginationInnerInterceptor() {
         PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
         // 设置数据库类型为mysql
         paginationInnerInterceptor.setDbType(DbType.MYSQL);
@@ -47,16 +44,14 @@ public class MybatisPlusConfig
     /**
      * 乐观锁插件
      */
-    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor()
-    {
+    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
         return new OptimisticLockerInnerInterceptor();
     }
 
     /**
      * 如果是对全表的删除或更新操作，就会终止该操作
      */
-    public BlockAttackInnerInterceptor blockAttackInnerInterceptor()
-    {
+    public BlockAttackInnerInterceptor blockAttackInnerInterceptor() {
         return new BlockAttackInnerInterceptor();
     }
 }

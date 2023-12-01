@@ -40,14 +40,6 @@ public class CvmsConfig {
      */
     private boolean demoEnabled;
 
-    public void setProfile(String profile) {
-        CvmsConfig.profile = profile;
-    }
-
-    public void setAddressEnabled(boolean addressEnabled) {
-        CvmsConfig.addressEnabled = addressEnabled;
-    }
-
     /**
      * 获取导入上传路径
      */
@@ -74,6 +66,14 @@ public class CvmsConfig {
      */
     public static String getUploadPath() {
         return getProfile() + "/upload";
+    }
+
+    public void setProfile(String profile) {
+        CvmsConfig.profile = profile;
+    }
+
+    public void setAddressEnabled(boolean addressEnabled) {
+        CvmsConfig.addressEnabled = addressEnabled;
     }
 
     public void setName(String name) {
