@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sven.cvms.project.interviewee.mapper.IntervieweeMapper">
+    
+    <resultMap type="Interviewee" id="IntervieweeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="gender"    column="gender"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="contact"    column="contact"    />
+        <result property="email"    column="email"    />
+        <result property="degree"    column="degree"    />
+        <result property="political"    column="political"    />
+        <result property="job"    column="job"    />
+        <result property="salary"    column="salary"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectIntervieweeVo">
+        select id, name, gender, birthday, contact, email, degree, political, job, salary, create_by, create_time, update_by, update_time from interviewee
+    </sql>
+
+    <select id="selectIntervieweeList" parameterType="Interviewee" resultMap="IntervieweeResult">
+        <include refid="selectIntervieweeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+            <if test="contact != null  and contact != ''"> and contact like concat('%', #{contact}, '%')</if>
+            <if test="email != null  and email != ''"> and email like concat('%', #{email}, '%')</if>
+            <if test="degree != null "> and degree = #{degree}</if>
+            <if test="political != null  and political != ''"> and political like concat('%', #{political}, '%')</if>
+            <if test="job != null  and job != ''"> and job like concat('%', #{job}, '%')</if>
+            <if test="salary != null "> and salary like concat('%', #{salary}, '%')</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectIntervieweeById" parameterType="Long" resultMap="IntervieweeResult">
+        <include refid="selectIntervieweeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInterviewee" parameterType="Interviewee" useGeneratedKeys="true" keyProperty="id">
+        insert into interviewee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="gender != null">gender,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="contact != null">contact,</if>
+            <if test="email != null">email,</if>
+            <if test="degree != null">degree,</if>
+            <if test="political != null">political,</if>
+            <if test="job != null">job,</if>
+            <if test="salary != null">salary,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="email != null">#{email},</if>
+            <if test="degree != null">#{degree},</if>
+            <if test="political != null">#{political},</if>
+            <if test="job != null">#{job},</if>
+            <if test="salary != null">#{salary},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInterviewee" parameterType="Interviewee">
+        update interviewee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="degree != null">degree = #{degree},</if>
+            <if test="political != null">political = #{political},</if>
+            <if test="job != null">job = #{job},</if>
+            <if test="salary != null">salary = #{salary},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIntervieweeById" parameterType="Long">
+        delete from interviewee where id = #{id}
+    </delete>
+
+    <delete id="deleteIntervieweeByIds" parameterType="String">
+        delete from interviewee where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
