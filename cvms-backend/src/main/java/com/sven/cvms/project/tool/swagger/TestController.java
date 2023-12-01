@@ -3,7 +3,12 @@ package com.sven.cvms.project.tool.swagger;
 import com.sven.cvms.common.utils.StringUtils;
 import com.sven.cvms.framework.web.controller.BaseController;
 import com.sven.cvms.framework.web.domain.R;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,29 +21,29 @@ import java.util.Map;
  *
  * @author ruoyi
  */
-@Api("用户信息管理")
+@Tag(name = "用户信息管理")
 @RestController
 @RequestMapping("/test/user")
 public class TestController extends BaseController {
-    private final static Map<Integer, UserEntity> users = new LinkedHashMap<Integer, UserEntity>();
+    private final static Map<Integer, UserEntity> users = new LinkedHashMap<>();
 
-    {
+    static {
         users.put(1, new UserEntity(1, "admin", "admin123", "15888888888"));
         users.put(2, new UserEntity(2, "ry", "admin123", "15666666666"));
     }
 
-    @ApiOperation("获取用户列表")
+    @Operation(summary = "获取用户列表")
     @GetMapping("/list")
     public R<List<UserEntity>> userList() {
-        List<UserEntity> userList = new ArrayList<UserEntity>(users.values());
+        List<UserEntity> userList = new ArrayList<>(users.values());
         return R.ok(userList);
     }
 
-    @ApiOperation("获取用户详细")
-    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path", dataTypeClass = Integer.class)
+    @Operation(summary = "获取用户详细")
     @GetMapping("/{userId}")
     public R<UserEntity> getUser(
             @PathVariable
+            @Parameter(description = "用户Id", required = true)
             Integer userId) {
         if (!users.isEmpty() && users.containsKey(userId)) {
             return R.ok(users.get(userId));
@@ -47,12 +52,12 @@ public class TestController extends BaseController {
         }
     }
 
-    @ApiOperation("新增用户")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "Integer", dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = "username", value = "用户名称", dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "password", value = "用户密码", dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "mobile", value = "用户手机", dataType = "String", dataTypeClass = String.class)})
+    @Operation(summary = "新增用户")
+    @Parameters({
+            @Parameter(name = "userId", description = "用户id"),
+            @Parameter(name = "username", description = "用户名称"),
+            @Parameter(name = "password", description = "用户密码"),
+            @Parameter(name = "mobile", description = "用户手机")})
     @PostMapping("/save")
     public R<String> save(UserEntity user) {
         if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId())) {
@@ -62,7 +67,7 @@ public class TestController extends BaseController {
         return R.ok();
     }
 
-    @ApiOperation("更新用户")
+    @Operation(summary = "更新用户")
     @PutMapping("/update")
     public R<String> update(
             @RequestBody
@@ -78,8 +83,8 @@ public class TestController extends BaseController {
         return R.ok();
     }
 
-    @ApiOperation("删除用户信息")
-    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path", dataTypeClass = Integer.class)
+    @Operation(summary = "删除用户信息")
+    @Parameter(name = "userId", description = "用户ID", required = true)
     @DeleteMapping("/{userId}")
     public R<String> delete(
             @PathVariable
@@ -93,18 +98,19 @@ public class TestController extends BaseController {
     }
 }
 
-@ApiModel(value = "UserEntity", description = "用户实体")
+@Getter
+@Schema(name = "UserEntity", description = "用户实体")
 class UserEntity {
-    @ApiModelProperty("用户ID")
+    @Schema(description = "用户ID")
     private Integer userId;
 
-    @ApiModelProperty("用户名称")
+    @Schema(description = "用户名称")
     private String username;
 
-    @ApiModelProperty("用户密码")
+    @Schema(description = "用户密码")
     private String password;
 
-    @ApiModelProperty("用户手机")
+    @Schema(description = "用户手机")
     private String mobile;
 
     public UserEntity() {
@@ -118,32 +124,16 @@ class UserEntity {
         this.mobile = mobile;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getMobile() {
-        return mobile;
     }
 
     public void setMobile(String mobile) {

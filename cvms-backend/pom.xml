@@ -31,7 +31,6 @@
         <bitwalker.version>1.21</bitwalker.version>
         <jwt.version>0.12.3</jwt.version>
         <kaptcha.version>2.3.3</kaptcha.version>
-        <swagger.version>3.0.0</swagger.version>
         <poi.version>5.2.5</poi.version>
         <oshi.version>6.4.8</oshi.version>
         <velocity.version>2.3</velocity.version>
@@ -190,9 +189,9 @@
 
         <!-- Swagger3依赖 -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>${swagger.version}</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.2.0</version>
         </dependency>
 
         <!-- 获取系统信息 -->
