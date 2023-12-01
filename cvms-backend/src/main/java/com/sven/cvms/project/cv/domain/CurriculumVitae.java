@@ -4,8 +4,7 @@ import com.sven.cvms.framework.aspectj.lang.annotation.Excel;
 import com.sven.cvms.framework.web.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.ToString;
 
 
 /**
@@ -15,6 +14,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @date 2023-12-01
  */
 @Data
+@ToString
 @EqualsAndHashCode(callSuper = true)
 public class CurriculumVitae extends BaseEntity {
 
@@ -47,37 +47,4 @@ public class CurriculumVitae extends BaseEntity {
     @Excel(name = "文件保存路径")
     private String filePath;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setIntervieweeId(Long intervieweeId) {
-        this.intervieweeId = intervieweeId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("id", getId())
-                .append("intervieweeId", getIntervieweeId())
-                .append("name", getName())
-                .append("fileName", getFileName())
-                .append("filePath", getFilePath())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .toString();
-    }
 }
