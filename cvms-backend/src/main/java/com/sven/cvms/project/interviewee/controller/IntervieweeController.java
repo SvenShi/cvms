@@ -7,9 +7,8 @@ import com.sven.cvms.framework.web.controller.BaseController;
 import com.sven.cvms.framework.web.domain.AjaxResult;
 import com.sven.cvms.framework.web.page.TableDataInfo;
 import com.sven.cvms.project.interviewee.domain.Interviewee;
-import com.sven.cvms.project.interviewee.service.IIntervieweeService;
+import com.sven.cvms.project.interviewee.service.IntervieweeService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +23,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/interviewee/interviewee")
 public class IntervieweeController extends BaseController {
-    private final IIntervieweeService intervieweeService;
+    private final IntervieweeService intervieweeService;
 
-    public IntervieweeController(IIntervieweeService intervieweeService) {
+    public IntervieweeController(IntervieweeService intervieweeService) {
         this.intervieweeService = intervieweeService;
     }
 

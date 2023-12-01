@@ -10,7 +10,7 @@ import java.util.List;
  * @author sven
  * @date 2023-12-01
  */
-public interface IIntervieweeService {
+public interface IntervieweeService {
     /**
      * 查询人才库
      *

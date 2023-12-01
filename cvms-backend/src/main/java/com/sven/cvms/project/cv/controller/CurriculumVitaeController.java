@@ -7,7 +7,7 @@ import com.sven.cvms.framework.web.controller.BaseController;
 import com.sven.cvms.framework.web.domain.AjaxResult;
 import com.sven.cvms.framework.web.page.TableDataInfo;
 import com.sven.cvms.project.cv.domain.CurriculumVitae;
-import com.sven.cvms.project.cv.service.ICurriculumVitaeService;
+import com.sven.cvms.project.cv.service.CurriculumVitaeService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +24,9 @@ import java.util.List;
 @RequestMapping("/cv/cv")
 public class CurriculumVitaeController extends BaseController {
 
-    private final ICurriculumVitaeService curriculumVitaeService;
+    private final CurriculumVitaeService curriculumVitaeService;
 
-    public CurriculumVitaeController(ICurriculumVitaeService curriculumVitaeService) {
+    public CurriculumVitaeController(CurriculumVitaeService curriculumVitaeService) {
         this.curriculumVitaeService = curriculumVitaeService;
     }
 

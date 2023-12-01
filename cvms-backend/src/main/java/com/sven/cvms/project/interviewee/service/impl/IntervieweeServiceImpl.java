@@ -3,7 +3,7 @@ package com.sven.cvms.project.interviewee.service.impl;
 import com.sven.cvms.common.utils.DateUtils;
 import com.sven.cvms.project.interviewee.domain.Interviewee;
 import com.sven.cvms.project.interviewee.mapper.IntervieweeMapper;
-import com.sven.cvms.project.interviewee.service.IIntervieweeService;
+import com.sven.cvms.project.interviewee.service.IntervieweeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2023-12-01
  */
 @Service
-public class IntervieweeServiceImpl implements IIntervieweeService {
+public class IntervieweeServiceImpl implements IntervieweeService {
     private final IntervieweeMapper intervieweeMapper;
 
     public IntervieweeServiceImpl(IntervieweeMapper intervieweeMapper) {

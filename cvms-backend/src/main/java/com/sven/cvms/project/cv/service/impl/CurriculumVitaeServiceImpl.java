@@ -3,8 +3,7 @@ package com.sven.cvms.project.cv.service.impl;
 import com.sven.cvms.common.utils.DateUtils;
 import com.sven.cvms.project.cv.domain.CurriculumVitae;
 import com.sven.cvms.project.cv.mapper.CurriculumVitaeMapper;
-import com.sven.cvms.project.cv.service.ICurriculumVitaeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sven.cvms.project.cv.service.CurriculumVitaeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
  * @date 2023-12-01
  */
 @Service
-public class CurriculumVitaeServiceImpl implements ICurriculumVitaeService {
+public class CurriculumVitaeServiceImpl implements CurriculumVitaeService {
     private final CurriculumVitaeMapper curriculumVitaeMapper;
 
     public CurriculumVitaeServiceImpl(CurriculumVitaeMapper curriculumVitaeMapper) {

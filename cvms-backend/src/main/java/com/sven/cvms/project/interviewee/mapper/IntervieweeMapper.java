@@ -1,5 +1,6 @@
 package com.sven.cvms.project.interviewee.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sven.cvms.project.interviewee.domain.Interviewee;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author sven
  * @date 2023-12-01
  */
-public interface IntervieweeMapper {
+public interface IntervieweeMapper  extends BaseMapper<Interviewee> {
     /**
      * 查询人才库
      *

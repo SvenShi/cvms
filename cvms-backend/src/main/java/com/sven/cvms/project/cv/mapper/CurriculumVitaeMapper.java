@@ -1,5 +1,6 @@
 package com.sven.cvms.project.cv.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sven.cvms.project.cv.domain.CurriculumVitae;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author sven
  * @date 2023-12-01
  */
-public interface CurriculumVitaeMapper {
+public interface CurriculumVitaeMapper extends BaseMapper<CurriculumVitae> {
     /**
      * 查询简历
      *
