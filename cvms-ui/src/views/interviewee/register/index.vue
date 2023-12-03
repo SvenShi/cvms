@@ -1,0 +1,125 @@
+<template>
+  <div class="app-container">
+    <el-container style="align-items: center">
+
+      <el-header class="header">
+        <el-steps :active="step">
+          <el-step title="开始" icon="el-icon-warning-outline"></el-step>
+          <el-step title="信息录入" icon="el-icon-edit"></el-step>
+          <el-step title="上传简历" icon="el-icon-upload"></el-step>
+          <el-step title="完成" icon="el-icon-circle-check"></el-step>
+        </el-steps>
+      </el-header>
+      <el-main class="main">
+        <register-start @click="move(1)" :step="step" v-show="step == 1"/>
+        <interviewee-form v-show="step == 2" :form="form"/>
+        <upload-cv :file-list="fileList" v-show="step == 3"/>
+        <register-complete @click="reset" v-show="step == 4"/>
+      </el-main>
+      <el-footer class="footer">
+        <el-button @click="move(-1)" type="primary" v-show="step == 3">上一步</el-button>
+        <el-button @click="move(1)" type="primary" v-show="step == 2">下一步</el-button>
+        <el-button @click="submit" type="success" v-show="step == 3">完成</el-button>
+      </el-footer>
+    </el-container>
+  </div>
+</template>
+
+<script>
+
+
+import IntervieweeForm from '@/views/interviewee/register/intervieweeForm.vue'
+import RegisterStart from '@/views/interviewee/register/registerStart.vue'
+import UploadCv from '@/views/interviewee/register/uploadCv.vue'
+import RegisterComplete from '@/views/interviewee/register/registerComplete.vue'
+
+export default {
+  name: 'Register',
+  components: { RegisterComplete, UploadCv, RegisterStart, IntervieweeForm },
+  dicts: ['sys_user_sex'],
+  data() {
+    return {
+      // 当前步数
+      step: 1,
+      fileList:[],
+      // 表单参数
+      form: {
+        name: '',
+        gender: '',
+        age: 0,
+        birthday: '',
+        contact: '',
+        email: '',
+        degree: '',
+        political: '',
+        job: '',
+        salary: ''
+      },
+      // 表单校验
+      rules: {}
+    }
+  },
+  created() {
+
+  },
+  methods: {
+    /**
+     * 移动
+     * @param step
+     */
+    move(step) {
+      this.step += step
+    },
+    /**
+     * 提交
+     */
+    submit() {
+      // TODO: 2023/12/2 23:10 sven submit form and files
+      this.move(1)
+    },
+    /**
+     * 提交
+     */
+    reset() {
+      this.form = {
+        name: '',
+        gender: '',
+        age: 0,
+        birthday: '',
+        contact: '',
+        email: '',
+        degree: '',
+        political: '',
+        job: '',
+        salary: ''
+      };
+      this.step = 2;
+      this.fileList = [];
+    }
+  }
+}
+</script>
+<style scoped lang="scss">
+.header {
+  width: 40%;
+  min-width: 500px;
+  height: 30px !important;
+}
+
+.main {
+  height: calc(100vh - 155px);
+  width: 40%;
+  min-width: 500px;
+}
+
+.input {
+  width: 40% !important;
+  min-width: 200px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  align-items: center;
+}
+</style>
