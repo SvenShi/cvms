@@ -1,10 +1,20 @@
 <template>
   <div class="app-container" style="height: 100%">
-    <el-container id="complete">
-      <div id="complete-text" class="animate seven">
-        <span>录</span><span>入</span><span>成</span><span>功</span><span>!</span>
+
+    <el-container class="complete-container" v-if="type == 'success'">
+      <div class="animate success complete-text">
+        <span>录</span><span>入</span><span>成</span><span>功</span>
       </div>
-      <el-button @click="$emit('click')" type="success" round>继续录入</el-button>
+      <el-button @click="$emit('click',type)" type="success" round>继续录入</el-button>
+    </el-container>
+
+
+    <el-container class="complete-container" v-if="type == 'error'">
+      <div class="animate error complete-text">
+        <span>录</span><span>入</span><span>失</span><span>败</span>
+      </div>
+      <span>{{ detail }}</span>
+      <el-button @click="$emit('click',type)" type="primary" round>重新录入</el-button>
     </el-container>
   </div>
 </template>
@@ -14,6 +24,21 @@
 
 export default {
   name: 'RegisterComplete',
+  props: {
+    type: {
+      type: String,
+      required: true,
+      default: 'success',
+      validator: function(value) {
+        // 这个值必须匹配下列字符串中的一个
+        return ['success', 'error'].includes(value)
+      }
+    },
+    detail: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       // 表单校验
@@ -28,14 +53,14 @@ export default {
 </script>
 <style scoped lang="scss">
 
-#complete {
+.complete-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
 }
 
-#complete-text {
+.complete-text {
   position: absolute;
   top: 30vh;
   font-size: 50px;
@@ -133,22 +158,29 @@ a, a:link, a:visited {
   animation-delay: .95s;
 }
 
-.seven span {
-  color: #348c04;
+.success span {
+  color: #67C23A;
   opacity: 0;
   transform: translate(-150px, 0) scale(.3);
-  animation: leftRight .5s forwards;
+  animation: leftRight-success .5s forwards;
 }
 
-@keyframes leftRight {
+.error span {
+  color: #F56C6C;
+  opacity: 0;
+  transform: translate(-150px, 0) scale(.3);
+  animation: leftRight-error .5s forwards;
+}
+
+@keyframes leftRight-success {
   40% {
     transform: translate(50px, 0) scale(.7);
     opacity: 1;
-    color: #348c04;
+    color: #67C23A;
   }
 
   60% {
-    color: #235ae7;
+    color: #409EFF;
   }
 
   80% {
@@ -161,5 +193,28 @@ a, a:link, a:visited {
     opacity: 1;
   }
 }
+
+@keyframes leftRight-error {
+  40% {
+    transform: translate(50px, 0) scale(.7);
+    opacity: 1;
+    color: #F56C6C;
+  }
+
+  60% {
+    color: #E6A23C;
+  }
+
+  80% {
+    transform: translate(0) scale(2);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(0) scale(1);
+    opacity: 1;
+  }
+}
+
 
 </style>

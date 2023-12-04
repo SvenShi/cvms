@@ -14,7 +14,7 @@
         <register-start @click="move(1)" :step="step" v-show="step == 1"/>
         <interviewee-form v-show="step == 2" :form="form"/>
         <upload-cv :file-list="fileList" v-show="step == 3"/>
-        <register-complete @click="reset" v-show="step == 4"/>
+        <register-complete :type="submitMessage.type" :detail="submitMessage.detail" @click="reset" v-show="step == 4"/>
       </el-main>
       <el-footer class="footer">
         <el-button @click="move(-1)" type="primary" v-show="step == 3">上一步</el-button>
@@ -32,16 +32,17 @@ import IntervieweeForm from '@/views/interviewee/register/intervieweeForm.vue'
 import RegisterStart from '@/views/interviewee/register/registerStart.vue'
 import UploadCv from '@/views/interviewee/register/uploadCv.vue'
 import RegisterComplete from '@/views/interviewee/register/registerComplete.vue'
+import { registerInterviewee } from '@/api/interviewee/interviewee'
+import item from '@/layout/components/Sidebar/Item.vue'
 
 export default {
   name: 'Register',
   components: { RegisterComplete, UploadCv, RegisterStart, IntervieweeForm },
-  dicts: ['sys_user_sex'],
   data() {
     return {
       // 当前步数
       step: 1,
-      fileList:[],
+      fileList: [],
       // 表单参数
       form: {
         name: '',
@@ -56,7 +57,12 @@ export default {
         salary: ''
       },
       // 表单校验
-      rules: {}
+      rules: {},
+      // 提交完成信息
+      submitMessage: {
+        type: 'success',
+        detail: ''
+      }
     }
   },
   created() {
@@ -75,7 +81,25 @@ export default {
      */
     submit() {
       // TODO: 2023/12/2 23:10 sven submit form and files
-      this.move(1)
+      let formData = new FormData()
+      if (this.fileList.length > 0) {
+        this.fileList.forEach(item => {
+          formData.append('fileList', item.raw)
+        })
+      }
+      for (let key in this.form) {
+        formData.append(key, this.form[key])
+      }
+      registerInterviewee(formData).then(res => {
+        console.log(res)
+        if (res.code == 200) {
+          this.submitMessage.type = 'success'
+        } else {
+          this.submitMessage.type = 'error'
+          this.submitMessage.detail = '出现异常，请重新尝试录入'
+        }
+        this.move(1)
+      })
     },
     /**
      * 提交
@@ -92,9 +116,11 @@ export default {
         political: '',
         job: '',
         salary: ''
-      };
-      this.step = 2;
-      this.fileList = [];
+      }
+      this.step = 2
+      this.fileList = []
+      this.submitMessage.type = 'success'
+      this.submitMessage.detail = ''
     }
   }
 }

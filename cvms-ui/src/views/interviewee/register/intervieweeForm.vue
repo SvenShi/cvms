@@ -30,7 +30,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="年龄" prop="age">
-            <el-input class="input" v-model="form.age" :disabled="true"/>
+            <el-input class="input" v-model.number="form.age"/>
           </el-form-item>
           <el-form-item label="联系方式" prop="contact">
             <el-input class="input" v-model="form.contact" placeholder="请输入联系方式"/>
@@ -55,7 +55,7 @@
             <el-input class="input" v-model="form.job" placeholder="请输入内容"/>
           </el-form-item>
           <el-form-item label="期望薪资" prop="salary">
-            <el-input class="input" v-model="form.salary" type="" placeholder="请输入期望薪资"/>
+            <el-input class="input" v-model.number="form.salary" type="" placeholder="请输入期望薪资"/>
           </el-form-item>
         </el-form>
       </el-card>
@@ -74,7 +74,7 @@ export default {
     form: {
       name: '',
       gender: '',
-      age: 0,
+      age: undefined,
       birthday: '',
       contact: '',
       email: '',
@@ -87,13 +87,28 @@ export default {
   data() {
     return {
       // 表单校验
-      rules: {}
+      rules: {
+        name: [
+          { required: true, message: '姓名不能为空' }
+        ],
+        gender: [
+          { required: true, message: '性别不能为空' }
+        ],
+        age: [
+          { required: true, message: '年龄不能为空' },
+          { type: 'number', message: '年龄必须为数字值' }
+        ]
+      }
     }
   },
   created() {
 
   },
   methods: {
+    /**
+     * 自动更新年龄
+     * @param date
+     */
     birthdayChange(date) {
       let birthday = new Date(date)
       let today = new Date()

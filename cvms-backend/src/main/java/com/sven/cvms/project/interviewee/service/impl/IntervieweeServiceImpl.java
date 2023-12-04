@@ -1,11 +1,19 @@
 package com.sven.cvms.project.interviewee.service.impl;
 
 import com.sven.cvms.common.utils.DateUtils;
+import com.sven.cvms.common.utils.bean.BeanUtils;
+import com.sven.cvms.common.utils.file.FileUploadUtils;
+import com.sven.cvms.project.cv.domain.CurriculumVitae;
+import com.sven.cvms.project.cv.service.CurriculumVitaeService;
 import com.sven.cvms.project.interviewee.domain.Interviewee;
+import com.sven.cvms.project.interviewee.domain.IntervieweeRegisterDTO;
 import com.sven.cvms.project.interviewee.mapper.IntervieweeMapper;
 import com.sven.cvms.project.interviewee.service.IntervieweeService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,10 +24,19 @@ import java.util.List;
  */
 @Service
 public class IntervieweeServiceImpl implements IntervieweeService {
+    /**
+     * 面试人服务
+     */
     private final IntervieweeMapper intervieweeMapper;
 
-    public IntervieweeServiceImpl(IntervieweeMapper intervieweeMapper) {
+    /**
+     * 简历服务
+     */
+    private final CurriculumVitaeService curriculumVitaeService;
+
+    public IntervieweeServiceImpl(IntervieweeMapper intervieweeMapper, CurriculumVitaeService curriculumVitaeService) {
         this.intervieweeMapper = intervieweeMapper;
+        this.curriculumVitaeService = curriculumVitaeService;
     }
 
     /**
@@ -47,13 +64,25 @@ public class IntervieweeServiceImpl implements IntervieweeService {
     /**
      * 新增人才库
      *
-     * @param interviewee 人才库
+     * @param intervieweeDTO 人才库
      * @return 结果
      */
     @Override
-    public int insertInterviewee(Interviewee interviewee) {
-        interviewee.setCreateTime(DateUtils.getNowDate());
-        return intervieweeMapper.insertInterviewee(interviewee);
+    @Transactional(rollbackFor = Exception.class)
+    public int insertInterviewee(IntervieweeRegisterDTO intervieweeDTO) throws IOException {
+        Interviewee interviewee = new Interviewee();
+        BeanUtils.copyProperties(intervieweeDTO, interviewee);
+        int i = intervieweeMapper.insertInterviewee(interviewee);
+        for (MultipartFile multipartFile : intervieweeDTO.getFileList()) {
+            CurriculumVitae curriculumVitae = new CurriculumVitae();
+            String saveFileName = FileUploadUtils.upload(multipartFile);
+            curriculumVitae.setIntervieweeId(interviewee.getId());
+            curriculumVitae.setName(multipartFile.getOriginalFilename());
+            curriculumVitae.setFilePath(saveFileName);
+            curriculumVitae.setCreateTime(DateUtils.getNowDate());
+            curriculumVitaeService.insertCurriculumVitae(curriculumVitae);
+        }
+        return i;
     }
 
     /**

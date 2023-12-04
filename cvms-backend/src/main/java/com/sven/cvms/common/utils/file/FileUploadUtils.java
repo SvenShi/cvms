@@ -8,6 +8,7 @@ import com.sven.cvms.common.utils.DateUtils;
 import com.sven.cvms.common.utils.StringUtils;
 import com.sven.cvms.common.utils.uuid.Seq;
 import com.sven.cvms.framework.config.CvmsConfig;
+import lombok.Getter;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,11 +36,8 @@ public class FileUploadUtils {
     /**
      * 默认上传的地址
      */
+    @Getter
     private static String defaultBaseDir = CvmsConfig.getProfile();
-
-    public static String getDefaultBaseDir() {
-        return defaultBaseDir;
-    }
 
     public static void setDefaultBaseDir(String defaultBaseDir) {
         FileUploadUtils.defaultBaseDir = defaultBaseDir;
@@ -52,7 +50,7 @@ public class FileUploadUtils {
      * @return 文件名称
      * @throws Exception
      */
-    public static final String upload(MultipartFile file) throws IOException {
+    public static String upload(MultipartFile file) throws IOException {
         try {
             return upload(getDefaultBaseDir(), file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
         } catch (Exception e) {
@@ -68,7 +66,7 @@ public class FileUploadUtils {
      * @return 文件名称
      * @throws IOException
      */
-    public static final String upload(String baseDir, MultipartFile file) throws IOException {
+    public static String upload(String baseDir, MultipartFile file) throws IOException {
         try {
             return upload(baseDir, file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
         } catch (Exception e) {
@@ -88,8 +86,7 @@ public class FileUploadUtils {
      * @throws IOException                          比如读写文件出错时
      * @throws InvalidExtensionException            文件校验异常
      */
-    public static final String upload(String baseDir, MultipartFile file,
-                                      String[] allowedExtension) throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException, InvalidExtensionException {
+    public static String upload(String baseDir, MultipartFile file, String[] allowedExtension) throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException, InvalidExtensionException {
         int fileNameLength = Objects.requireNonNull(file.getOriginalFilename()).length();
         if (fileNameLength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH) {
             throw new FileNameLengthLimitExceededException(FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
@@ -107,13 +104,13 @@ public class FileUploadUtils {
     /**
      * 编码文件名
      */
-    public static final String extractFilename(MultipartFile file) {
+    public static String extractFilename(MultipartFile file) {
         return StringUtils.format("{}/{}_{}.{}", DateUtils.datePath(),
                 FilenameUtils.getBaseName(file.getOriginalFilename()), Seq.getId(Seq.uploadSeqType),
                 getExtension(file));
     }
 
-    public static final File getAbsoluteFile(String uploadDir, String fileName) throws IOException {
+    public static File getAbsoluteFile(String uploadDir, String fileName) throws IOException {
         File desc = new File(uploadDir + File.separator + fileName);
 
         if (!desc.exists()) {
@@ -124,7 +121,7 @@ public class FileUploadUtils {
         return desc;
     }
 
-    public static final String getPathFileName(String uploadDir, String fileName) throws IOException {
+    public static String getPathFileName(String uploadDir, String fileName) throws IOException {
         int dirLastIndex = CvmsConfig.getProfile().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
         return Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
@@ -138,8 +135,7 @@ public class FileUploadUtils {
      * @throws FileSizeLimitExceededException 如果超出最大大小
      * @throws InvalidExtensionException
      */
-    public static final void assertAllowed(MultipartFile file,
-                                           String[] allowedExtension) throws FileSizeLimitExceededException, InvalidExtensionException {
+    public static void assertAllowed(MultipartFile file, String[] allowedExtension) throws FileSizeLimitExceededException, InvalidExtensionException {
         long size = file.getSize();
         if (size > DEFAULT_MAX_SIZE) {
             throw new FileSizeLimitExceededException(DEFAULT_MAX_SIZE / 1024 / 1024);
@@ -173,7 +169,7 @@ public class FileUploadUtils {
      * @param allowedExtension
      * @return
      */
-    public static final boolean isAllowedExtension(String extension, String[] allowedExtension) {
+    public static boolean isAllowedExtension(String extension, String[] allowedExtension) {
         for (String str : allowedExtension) {
             if (str.equalsIgnoreCase(extension)) {
                 return true;
@@ -188,7 +184,7 @@ public class FileUploadUtils {
      * @param file 表单文件
      * @return 后缀名
      */
-    public static final String getExtension(MultipartFile file) {
+    public static String getExtension(MultipartFile file) {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (StringUtils.isEmpty(extension)) {
             extension = MimeTypeUtils.getExtension(Objects.requireNonNull(file.getContentType()));

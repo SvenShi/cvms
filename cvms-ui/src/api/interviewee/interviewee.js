@@ -1,5 +1,15 @@
 import request from '@/utils/request'
 
+
+// 人才录入
+export function registerInterviewee(data) {
+  return request({
+    url: '/interviewee/interviewee',
+    method: 'post',
+    data: data
+  })
+}
+
 // 查询人才库列表
 export function listInterviewee(query) {
   return request({

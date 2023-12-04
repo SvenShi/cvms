@@ -1,7 +1,9 @@
 package com.sven.cvms.project.interviewee.service;
 
 import com.sven.cvms.project.interviewee.domain.Interviewee;
+import com.sven.cvms.project.interviewee.domain.IntervieweeRegisterDTO;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ public interface IntervieweeService {
      * @param interviewee 人才库
      * @return 结果
      */
-    int insertInterviewee(Interviewee interviewee);
+    int insertInterviewee(IntervieweeRegisterDTO interviewee) throws IOException;
 
     /**
      * 修改人才库
