@@ -13,8 +13,14 @@
       <div class="animate error complete-text">
         <span>录</span><span>入</span><span>失</span><span>败</span>
       </div>
-      <span>{{ detail }}</span>
-      <el-button @click="$emit('click',type)" type="primary" round>重新录入</el-button>
+      <el-container style="align-items: center">
+        <el-main>
+          <div>{{ detail }}</div>
+        </el-main>
+        <el-footer>
+          <el-button @click="$emit('click',type)" type="primary" round>重新录入</el-button>
+        </el-footer>
+      </el-container>
     </el-container>
   </div>
 </template>

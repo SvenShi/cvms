@@ -30,13 +30,13 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="年龄" prop="age">
-            <el-input class="input" v-model.number="form.age"/>
+            <el-input class="input" v-model.number="form.age" placeholder="请输入年龄"/>
           </el-form-item>
           <el-form-item label="联系方式" prop="contact">
             <el-input class="input" v-model="form.contact" placeholder="请输入联系方式"/>
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
-            <el-input class="input" v-model="form.email" placeholder="请输入内容"/>
+            <el-input class="input" v-model="form.email" placeholder="请输入邮箱"/>
           </el-form-item>
           <el-form-item label="学历" prop="degree">
             <el-select v-model="form.degree" placeholder="学历" style="width: 90px">
@@ -52,7 +52,7 @@
             <el-input class="input" v-model="form.political" placeholder="请输入政治面貌"/>
           </el-form-item>
           <el-form-item label="应聘岗位" prop="job">
-            <el-input class="input" v-model="form.job" placeholder="请输入内容"/>
+            <el-input class="input" v-model="form.job" placeholder="请输入应聘岗位"/>
           </el-form-item>
           <el-form-item label="期望薪资" prop="salary">
             <el-input class="input" v-model.number="form.salary" type="" placeholder="请输入期望薪资"/>
@@ -97,6 +97,9 @@ export default {
         age: [
           { required: true, message: '年龄不能为空' },
           { type: 'number', message: '年龄必须为数字值' }
+        ],
+        email: [
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ]
       }
     }
@@ -117,7 +120,13 @@ export default {
       if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
         age--
       }
-      this.form.age = age < 0 ? 0 : age
+      this.form.age = age < 0 ? undefined : age
+    },
+    validate() {
+      return this.$refs.form.validate()
+    },
+    resetForm() {
+      return this.$refs.form.resetFields()
     }
   }
 }

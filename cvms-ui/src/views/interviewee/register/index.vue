@@ -12,7 +12,7 @@
       </el-header>
       <el-main class="main">
         <register-start @click="move(1)" :step="step" v-show="step == 1"/>
-        <interviewee-form v-show="step == 2" :form="form"/>
+        <interviewee-form ref="interForm" v-show="step == 2" :form="form"/>
         <upload-cv :file-list="fileList" v-show="step == 3"/>
         <register-complete :type="submitMessage.type" :detail="submitMessage.detail" @click="reset" v-show="step == 4"/>
       </el-main>
@@ -47,7 +47,7 @@ export default {
       form: {
         name: '',
         gender: '',
-        age: 0,
+        age: undefined,
         birthday: '',
         contact: '',
         email: '',
@@ -74,53 +74,71 @@ export default {
      * @param step
      */
     move(step) {
-      this.step += step
+      if (this.step == 2) {
+        let that = this
+        //   检查表单要求
+        this.$refs.interForm.validate().then((valid, obj) => {
+            if (valid) {
+              that.step += step
+            }
+          }
+        )
+      } else {
+        this.step += step
+      }
     },
     /**
      * 提交
      */
     submit() {
-      // TODO: 2023/12/2 23:10 sven submit form and files
-      let formData = new FormData()
-      if (this.fileList.length > 0) {
-        this.fileList.forEach(item => {
-          formData.append('fileList', item.raw)
-        })
-      }
-      for (let key in this.form) {
-        formData.append(key, this.form[key])
-      }
-      registerInterviewee(formData).then(res => {
-        console.log(res)
-        if (res.code == 200) {
-          this.submitMessage.type = 'success'
-        } else {
-          this.submitMessage.type = 'error'
-          this.submitMessage.detail = '出现异常，请重新尝试录入'
+      this.$modal.confirm(`确认提交录入请求并上传[${this.fileList.length}]个简历`).then(() => {
+        let formData = new FormData()
+        if (this.fileList.length > 0) {
+          this.fileList.forEach(item => {
+            formData.append('fileList', item.raw)
+          })
         }
-        this.move(1)
+        for (let key in this.form) {
+          formData.append(key, this.form[key])
+        }
+        registerInterviewee(formData).then(res => {
+          if (res.code == 200) {
+            this.submitMessage.type = 'success'
+          } else {
+            this.submitMessage.type = 'error'
+            if (res.msg == null) {
+              this.submitMessage.detail = '出现异常，请重新尝试录入'
+            } else {
+              this.submitMessage.detail = res.msg
+            }
+          }
+          this.move(1)
+        })
       })
     },
     /**
      * 提交
      */
-    reset() {
-      this.form = {
-        name: '',
-        gender: '',
-        age: 0,
-        birthday: '',
-        contact: '',
-        email: '',
-        degree: '',
-        political: '',
-        job: '',
-        salary: ''
+    reset(type) {
+      if (type == 'success') {
+        this.form = {
+          name: '',
+          gender: '',
+          age: 0,
+          birthday: '',
+          contact: '',
+          email: '',
+          degree: '',
+          political: '',
+          job: '',
+          salary: ''
+        }
+        this.$refs.interForm.resetForm()
+        this.step = 2
+        this.fileList = []
+        this.submitMessage.type = 'success'
+        this.submitMessage.detail = ''
       }
-      this.step = 2
-      this.fileList = []
-      this.submitMessage.type = 'success'
-      this.submitMessage.detail = ''
     }
   }
 }
