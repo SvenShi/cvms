@@ -66,14 +66,14 @@ public class IntervieweeController extends BaseController {
     }
 
     /**
-     * 新增人才库
+     * 人才录入
      */
     @PreAuthorize("@ss.hasPermi('interviewee:interviewee:add')")
     @Log(title = "人才库", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(
+    public AjaxResult register(
             IntervieweeRegisterDTO interviewee) throws IOException {
-        return toAjax(intervieweeService.insertInterviewee(interviewee));
+        return toAjax(intervieweeService.registerInterviewee(interviewee));
     }
 
     /**

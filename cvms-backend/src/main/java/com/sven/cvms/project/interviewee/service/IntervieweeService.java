@@ -35,7 +35,7 @@ public interface IntervieweeService {
      * @param interviewee 人才库
      * @return 结果
      */
-    int insertInterviewee(IntervieweeRegisterDTO interviewee) throws IOException;
+    int registerInterviewee(IntervieweeRegisterDTO interviewee) throws IOException;
 
     /**
      * 修改人才库

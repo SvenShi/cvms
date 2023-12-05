@@ -9,6 +9,7 @@ import com.sven.cvms.project.interviewee.domain.Interviewee;
 import com.sven.cvms.project.interviewee.domain.IntervieweeRegisterDTO;
 import com.sven.cvms.project.interviewee.mapper.IntervieweeMapper;
 import com.sven.cvms.project.interviewee.service.IntervieweeService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,20 +70,22 @@ public class IntervieweeServiceImpl implements IntervieweeService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insertInterviewee(IntervieweeRegisterDTO intervieweeDTO) throws IOException {
+    public int registerInterviewee(IntervieweeRegisterDTO intervieweeDTO) throws IOException {
         Interviewee interviewee = new Interviewee();
         BeanUtils.copyProperties(intervieweeDTO, interviewee);
-        int i = intervieweeMapper.insertInterviewee(interviewee);
-        for (MultipartFile multipartFile : intervieweeDTO.getFileList()) {
-            CurriculumVitae curriculumVitae = new CurriculumVitae();
-            String saveFileName = FileUploadUtils.upload(multipartFile);
-            curriculumVitae.setIntervieweeId(interviewee.getId());
-            curriculumVitae.setName(multipartFile.getOriginalFilename());
-            curriculumVitae.setFilePath(saveFileName);
-            curriculumVitae.setCreateTime(DateUtils.getNowDate());
-            curriculumVitaeService.insertCurriculumVitae(curriculumVitae);
+        int insertCount = intervieweeMapper.insertInterviewee(interviewee);
+        if (CollectionUtils.isNotEmpty(intervieweeDTO.getFileList())){
+            for (MultipartFile multipartFile : intervieweeDTO.getFileList()) {
+                CurriculumVitae curriculumVitae = new CurriculumVitae();
+                String saveFileName = FileUploadUtils.upload(multipartFile);
+                curriculumVitae.setIntervieweeId(interviewee.getId());
+                curriculumVitae.setName(multipartFile.getOriginalFilename());
+                curriculumVitae.setFilePath(saveFileName);
+                curriculumVitae.setCreateTime(DateUtils.getNowDate());
+                curriculumVitaeService.insertCurriculumVitae(curriculumVitae);
+            }
         }
-        return i;
+        return insertCount;
     }
 
     /**
