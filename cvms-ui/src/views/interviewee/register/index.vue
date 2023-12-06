@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-container style="align-items: center">
+    <el-container style="align-items: center" v-loading="loading">
 
       <el-header class="header">
         <el-steps :active="step">
@@ -34,12 +34,14 @@ import UploadCv from '@/views/interviewee/register/uploadCv.vue'
 import RegisterComplete from '@/views/interviewee/register/registerComplete.vue'
 import { registerInterviewee } from '@/api/interviewee/interviewee'
 import item from '@/layout/components/Sidebar/Item.vue'
+import { float } from 'quill/ui/icons'
 
 export default {
   name: 'Register',
   components: { RegisterComplete, UploadCv, RegisterStart, IntervieweeForm },
   data() {
     return {
+      loading: false,
       // 当前步数
       step: 1,
       fileList: [],
@@ -92,6 +94,7 @@ export default {
      */
     submit() {
       this.$modal.confirm(`确认提交录入请求并上传[${this.fileList.length}]个简历`).then(() => {
+        this.loading = true
         let formData = new FormData()
         if (this.fileList.length > 0) {
           this.fileList.forEach(item => {
@@ -113,6 +116,9 @@ export default {
             }
           }
           this.move(1)
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
         })
       })
     },

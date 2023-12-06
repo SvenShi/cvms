@@ -5,12 +5,12 @@
         <div slot="header" class="clearfix">上传简历</div>
         <el-upload
           ref="upload"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action=""
           :on-remove="onChange"
           :before-remove="beforeRemove"
           drag
           multiple
-          :limit="3"
+          :limit="limit"
           :on-change="onChange"
           :on-exceed="handleExceed"
           :auto-upload="false"
@@ -28,18 +28,20 @@
 <script>
 
 
-
 export default {
   name: 'UploadCv',
   props: {
     fileList: {
       type: Array,
       default: []
+    },
+    limit: {
+      type: Number,
+      default: 3
     }
   },
   data() {
-    return {
-    }
+    return {}
   },
   methods: {
     onChange(file, fileList) {
@@ -49,7 +51,7 @@ export default {
       })
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      this.$message.warning(`当前限制选择 ${this.limit} 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
