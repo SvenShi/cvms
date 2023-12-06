@@ -23,7 +23,7 @@ import java.util.List;
  * @date 2023-12-01
  */
 @RestController
-@RequestMapping("/interviewee/interviewee")
+@RequestMapping("/interviewee")
 public class IntervieweeController extends BaseController {
     private final IntervieweeService intervieweeService;
 

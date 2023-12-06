@@ -45,6 +45,13 @@ public class Interviewee extends BaseEntity {
     @Excel(name = "生日", width = 30, dateFormat = "yyyy-MM-dd")
     private LocalDate birthday;
 
+
+    /**
+     * 年龄
+     */
+    @Excel(name = "年龄")
+    private Integer age;
+
     /**
      * 联系方式
      */

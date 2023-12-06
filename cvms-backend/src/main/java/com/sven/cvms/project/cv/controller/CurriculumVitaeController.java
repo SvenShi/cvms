@@ -1,6 +1,6 @@
 package com.sven.cvms.project.cv.controller;
 
-import com.sven.cvms.common.utils.poi.ExcelUtil;
+import com.sven.cvms.common.utils.file.FileUploadUtils;
 import com.sven.cvms.framework.aspectj.lang.annotation.Log;
 import com.sven.cvms.framework.aspectj.lang.enums.BusinessType;
 import com.sven.cvms.framework.web.controller.BaseController;
@@ -8,10 +8,12 @@ import com.sven.cvms.framework.web.domain.AjaxResult;
 import com.sven.cvms.framework.web.page.TableDataInfo;
 import com.sven.cvms.project.cv.domain.CurriculumVitae;
 import com.sven.cvms.project.cv.service.CurriculumVitaeService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ import java.util.List;
  * @date 2023-12-01
  */
 @RestController
-@RequestMapping("/cv/cv")
+@RequestMapping("/cv")
 public class CurriculumVitaeController extends BaseController {
 
     private final CurriculumVitaeService curriculumVitaeService;
@@ -44,13 +46,28 @@ public class CurriculumVitaeController extends BaseController {
     /**
      * 导出简历列表
      */
-    @PreAuthorize("@ss.hasPermi('cv:cv:export')")
-    @Log(title = "简历", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, CurriculumVitae curriculumVitae) {
-        List<CurriculumVitae> list = curriculumVitaeService.selectCurriculumVitaeList(curriculumVitae);
-        ExcelUtil<CurriculumVitae> util = new ExcelUtil<CurriculumVitae>(CurriculumVitae.class);
-        util.exportExcel(response, list, "简历数据");
+    @PreAuthorize("@ss.hasPermi('cv:cv:download')")
+    @Log(title = "简历", businessType = BusinessType.OTHER)
+    @PostMapping("/export/{id}")
+    public void download(HttpServletResponse response, HttpServletRequest request,
+                         @PathVariable("id")
+                         Long id) throws IOException {
+        CurriculumVitae curriculumVitae = curriculumVitaeService.selectCurriculumVitaeById(id);
+        // 本地资源路径
+
+        String localPath = FileUploadUtils.getDefaultBaseDir();
+        // TODO 2023/12/7 0:40 shiwei: 需要重新写上传和下载工具类来
+
+
+        // // 数据库资源地址
+        // String downloadPath = localPath + StringUtils.substringAfter(resource, Constants.RESOURCE_PREFIX);
+        // // 下载名称
+        // String downloadName = StringUtils.substringAfterLast(downloadPath, "/");
+        // response.setCharacterEncoding("utf-8");
+        // response.setContentType("multipart/form-data");
+        // response.setHeader("Content-Disposition",
+        //         "attachment;fileName=" + FileUtils.setFileDownloadHeader(request, downloadName));
+        // FileUtils.writeBytes(downloadPath, response.getOutputStream());
     }
 
     /**
