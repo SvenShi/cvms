@@ -1,10 +1,9 @@
 import request from '@/utils/request'
 
-
 // 人才录入
 export function registerInterviewee(data) {
   return request({
-    url: '/interviewee/interviewee',
+    url: '/interviewee',
     method: 'post',
     data: data
   })
@@ -13,7 +12,7 @@ export function registerInterviewee(data) {
 // 查询人才库列表
 export function listInterviewee(query) {
   return request({
-    url: '/interviewee/interviewee/list',
+    url: '/interviewee/list',
     method: 'get',
     params: query
   })
@@ -22,7 +21,7 @@ export function listInterviewee(query) {
 // 查询人才库详细
 export function getInterviewee(id) {
   return request({
-    url: '/interviewee/interviewee/' + id,
+    url: '/interviewee/' + id,
     method: 'get'
   })
 }
@@ -30,7 +29,7 @@ export function getInterviewee(id) {
 // 新增人才库
 export function addInterviewee(data) {
   return request({
-    url: '/interviewee/interviewee',
+    url: '/interviewee',
     method: 'post',
     data: data
   })
@@ -39,7 +38,7 @@ export function addInterviewee(data) {
 // 修改人才库
 export function updateInterviewee(data) {
   return request({
-    url: '/interviewee/interviewee',
+    url: '/interviewee',
     method: 'put',
     data: data
   })
@@ -48,7 +47,7 @@ export function updateInterviewee(data) {
 // 删除人才库
 export function delInterviewee(id) {
   return request({
-    url: '/interviewee/interviewee/' + id,
+    url: '/interviewee/' + id,
     method: 'delete'
   })
 }

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询简历列表
 export function listCv(query) {
   return request({
-    url: '/cv/cv/list',
+    url: '/cv/list',
     method: 'get',
     params: query
   })
@@ -12,25 +12,16 @@ export function listCv(query) {
 // 查询简历详细
 export function getCv(id) {
   return request({
-    url: '/cv/cv/' + id,
+    url: '/cv/' + id,
     method: 'get'
   })
 }
 
 // 新增简历
-export function addCv(data) {
+export function upload(data) {
   return request({
-    url: '/cv/cv',
+    url: '/cv',
     method: 'post',
-    data: data
-  })
-}
-
-// 修改简历
-export function updateCv(data) {
-  return request({
-    url: '/cv/cv',
-    method: 'put',
     data: data
   })
 }
@@ -38,7 +29,7 @@ export function updateCv(data) {
 // 删除简历
 export function delCv(id) {
   return request({
-    url: '/cv/cv/' + id,
+    url: '/cv/' + id,
     method: 'delete'
   })
 }

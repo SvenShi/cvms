@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :rules="searchRules" size="small" :inline="true" v-show="showSearch"
+    <el-form :model="queryParams" ref="queryForm"  size="small" :inline="true" v-show="showSearch"
              label-width="68px"
     >
       <el-row>
@@ -278,7 +278,7 @@
       </div>
     </el-dialog>
     <el-dialog :title="cvTittle" :visible.sync="cvShow" width="50vw" append-to-body>
-      <cv-table ref="cvTable" :interviewee-id="intervieweeId"/>
+      <cv-table ref="cvDialog" :interviewee-id="intervieweeId"/>
     </el-dialog>
 
   </div>
@@ -435,7 +435,12 @@ export default {
       this.cvTittle = row.name + '简历管理'
       this.intervieweeId = row.id
       this.cvShow = true
-      this.$refs.cvTable.getList()
+      let that = this;
+      this.$nextTick(()=>{
+        console.log(that.$refs.cvDialog)
+        that.$refs.cvDialog.getList()
+      })
+
     },
     /** 提交按钮 */
     submitForm() {
@@ -470,7 +475,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('interviewee/interviewee/export', {
+      this.download('interviewee/export', {
         ...this.queryParams
       }, `interviewee_${new Date().getTime()}.xlsx`)
     },

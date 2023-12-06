@@ -63,14 +63,26 @@
     </el-row>
 
 
-    <el-dialog title="简历上传" :visible.sync="showUpload" width="500px" append-to-body>
-      <upload-cv :file-list="fileList" :limit="3 - existFileCount"/>
+    <el-dialog title="上传简历" :visible.sync="showUpload" width="500px" append-to-body>
+      <upload-cv mode="normal" :file-list="fileList" :limit="3 - existFileCount"/>
+      <el-row>
+        <el-button
+          style="float: right"
+          type="success"
+          plain
+          icon="el-icon-upload2"
+          size="mini"
+          @click="updateCv"
+          v-hasPermi="['interviewee:interviewee:upload']"
+        >开始上传
+        </el-button>
+      </el-row>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { listCv } from '@/api/cv/cv'
+import { delCv, listCv, upload } from '@/api/cv/cv'
 import UploadCv from '@/views/interviewee/register/uploadCv.vue'
 
 export default {
@@ -78,7 +90,7 @@ export default {
   components: { UploadCv },
   props: {
     intervieweeId: {
-      type: String,
+      type: Number,
       default: null
     }
   },
@@ -110,8 +122,9 @@ export default {
     /** 查询简历列表 */
     getList() {
       this.loading = true
-      listCv(this.intervieweeId).then(response => {
-        this.intervieweeList = response.rows
+      let intervieweeId = this.intervieweeId
+      listCv({ intervieweeId }).then(response => {
+        this.cvList = response.rows
         this.total = response.total
         this.loading = false
       })
@@ -127,8 +140,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认删除人才库编号为"' + ids + '"的数据项？').then(function() {
-        return delInterviewee(ids)
+      this.$modal.confirm('是否确认删除简历编号为"' + ids + '"的数据项？').then(function() {
+        return delCv(ids)
       }).then(() => {
         this.getList()
         this.$modal.msgSuccess('删除成功')
@@ -141,12 +154,37 @@ export default {
     },
     /** 下载 */
     handleDownload(row) {
-
+      this.download('cv/download/' + row.id, {}, row.filename)
     },
     /**
      * 上传简历
      */
-    uploadCv() {
+    handleUpdate() {
+      this.showUpload = true
+    },
+    /**
+     * 上传简历
+     */
+    updateCv() {
+      if (this.fileList.length > 0) {
+        this.loading = true
+        let formData = new FormData()
+        formData.append('intervieweeId', this.intervieweeId)
+        this.fileList.forEach(item => {
+          formData.append('fileList', item)
+        })
+        upload(formData).then(res => {
+          if (res.code == 200) {
+            this.$modal.msgSuccess('上传成功')
+          } else {
+            this.$modal.msgError('上传失败')
+          }
+        }).catch(() => {
+          this.$modal.msgError('上传失败')
+        })
+      } else {
+        this.$modal.msgWarning('请先选择文件后上传')
+      }
 
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-container style="align-items: center">
-      <el-card style="width: 100%; align-items: center">
+      <el-card style="width: 100%; align-items: center" v-if="mode == 'card'">
         <div slot="header" class="clearfix">上传简历</div>
         <el-upload
           ref="upload"
@@ -21,6 +21,24 @@
           <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
       </el-card>
+      <el-upload
+        v-if="mode == 'normal'"
+        ref="upload"
+        action=""
+        :on-remove="onChange"
+        :before-remove="beforeRemove"
+        drag
+        multiple
+        :limit="limit"
+        :on-change="onChange"
+        :on-exceed="handleExceed"
+        :auto-upload="false"
+        accept=".pdf,.doc,.docx,.md,.txt"
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+      </el-upload>
     </el-container>
   </div>
 </template>
@@ -38,6 +56,13 @@ export default {
     limit: {
       type: Number,
       default: 3
+    },
+    mode: {
+      type: String,
+      default: 'card',
+      validator(value) {
+        return ['card', 'normal'].includes(value)
+      }
     }
   },
   data() {
