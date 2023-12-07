@@ -8,7 +8,7 @@
           icon="el-icon-upload2"
           size="mini"
           @click="handleUpdate"
-          v-hasPermi="['interviewee:interviewee:upload']"
+          v-hasPermi="['interviewee:cv:upload']"
         >上传
         </el-button>
       </el-col>
@@ -20,7 +20,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['interviewee:interviewee:remove']"
+          v-hasPermi="['interviewee:cv:remove']"
         >删除
         </el-button>
       </el-col>
@@ -40,7 +40,7 @@
               type="text"
               icon="el-icon-delete"
               @click="handleDownload(scope.row)"
-              v-hasPermi="['cv:cv:download']"
+              v-hasPermi="['interviewee:cv:download']"
             >下载
             </el-button>
             <el-button
@@ -48,7 +48,7 @@
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
-              v-hasPermi="['cv:cv:remove']"
+              v-hasPermi="['interviewee:cv:remove']"
             >删除
             </el-button>
           </template>
@@ -67,7 +67,7 @@
           icon="el-icon-upload2"
           size="mini"
           @click="updateCv"
-          v-hasPermi="['interviewee:interviewee:upload']"
+          v-hasPermi="['interviewee:cv:upload']"
         >开始上传
         </el-button>
       </el-row>

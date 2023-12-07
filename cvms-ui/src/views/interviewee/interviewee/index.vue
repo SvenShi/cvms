@@ -176,7 +176,7 @@
             type="text"
             icon="el-icon-document"
             @click="handleCv(scope.row)"
-            v-hasPermi="['interviewee:interviewee:cv']"
+            v-hasPermi="['interviewee:cv:query']"
           >简历
           </el-button>
           <el-button

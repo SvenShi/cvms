@@ -36,7 +36,7 @@ public class CurriculumVitaeController extends BaseController {
     /**
      * 查询简历列表
      */
-    @PreAuthorize("@ss.hasPermi('cv:cv:list')")
+    @PreAuthorize("@ss.hasPermi('interviewee:cv:query')")
     @GetMapping("/list")
     public TableDataInfo list(CurriculumVitae curriculumVitae) {
         startPage();
@@ -47,7 +47,7 @@ public class CurriculumVitaeController extends BaseController {
     /**
      * 下载简历
      */
-    @PreAuthorize("@ss.hasPermi('cv:cv:download')")
+    @PreAuthorize("@ss.hasPermi('interviewee:cv:download')")
     @Log(title = "简历", businessType = BusinessType.OTHER)
     @GetMapping("/download/{id}")
     public void download(HttpServletResponse response, HttpServletRequest request,
@@ -64,7 +64,7 @@ public class CurriculumVitaeController extends BaseController {
     /**
      * 上传简历
      */
-    @PreAuthorize("@ss.hasPermi('cv:cv:upload')")
+    @PreAuthorize("@ss.hasPermi('interviewee:cv:upload')")
     @Log(title = "简历", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult upload(List<MultipartFile> fileList, Long intervieweeId) throws IOException {
@@ -74,7 +74,7 @@ public class CurriculumVitaeController extends BaseController {
     /**
      * 删除简历
      */
-    @PreAuthorize("@ss.hasPermi('cv:cv:remove')")
+    @PreAuthorize("@ss.hasPermi('interviewee:cv:remove')")
     @Log(title = "简历", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(

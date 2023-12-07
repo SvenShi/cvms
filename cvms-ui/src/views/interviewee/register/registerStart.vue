@@ -1,7 +1,14 @@
 <template>
   <div class="app-container" style="height: 100%">
     <el-container id="starter">
-      <el-button id="starter-button" @click="$emit('click')" type="success" round>开始录入</el-button>
+      <el-button id="starter-button"
+                 @click="$emit('click')"
+                 type="success"
+                 round
+                 v-hasPermi="['interviewee:register:add']"
+      >
+        开始录入
+      </el-button>
     </el-container>
   </div>
 </template>

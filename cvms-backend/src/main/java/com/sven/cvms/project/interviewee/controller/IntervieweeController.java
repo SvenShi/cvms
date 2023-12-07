@@ -69,7 +69,7 @@ public class IntervieweeController extends BaseController {
     /**
      * 人才录入
      */
-    @PreAuthorize("@ss.hasPermi('interviewee:interviewee:add')")
+    @PreAuthorize("@ss.hasPermi('interviewee:register:add')")
     @Log(title = "人才库", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult register(

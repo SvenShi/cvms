@@ -11,14 +11,15 @@
       </el-header>
       <el-main class="main">
         <register-start @click="move(1)" :step="step" v-show="step == 1"/>
-        <interviewee-form  ref="interForm" v-show="step == 2" :form="form"/>
+        <interviewee-form ref="interForm" v-show="step == 2" :form="form"/>
         <upload-cv :file-list="fileList" v-show="step == 3"/>
         <register-complete :type="submitMessage.type" :detail="submitMessage.detail" @click="reset" v-show="step == 4"/>
       </el-main>
       <el-footer class="footer">
         <el-button @click="move(-1)" type="primary" v-show="step == 3">上一步</el-button>
         <el-button @click="move(1)" type="primary" v-show="step == 2">下一步</el-button>
-        <el-button @click="submit" type="success" v-show="step == 3">完成</el-button>
+        <el-button v-hasPermi="['interviewee:register:add']" @click="submit" type="success" v-show="step == 3">完成
+        </el-button>
       </el-footer>
     </el-container>
   </div>
