@@ -9,6 +9,23 @@ const baseURL = process.env.VUE_APP_BASE_API
 let downloadLoadingInstance;
 
 export default {
+  download(path){
+    var url = baseURL + path;
+    axios({
+      method: 'get',
+      url: url,
+      responseType: 'blob',
+      headers: { 'Authorization': 'Bearer ' + getToken() }
+    }).then((res) => {
+      const isBlob = blobValidate(res.data);
+      if (isBlob) {
+        const blob = new Blob([res.data])
+        this.saveAs(blob, decodeURIComponent(res.headers['download-filename']))
+      } else {
+        this.printErrMsg(res.data);
+      }
+    })
+  },
   name(name, isDelete = true) {
     var url = baseURL + "/common/download?fileName=" + encodeURIComponent(name) + "&delete=" + isDelete
     axios({
