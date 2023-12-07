@@ -1,21 +1,24 @@
 package com.sven.cvms.project.interviewee.service.impl;
 
-import com.sven.cvms.common.utils.DateUtils;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.sven.cvms.common.utils.SecurityUtils;
+import com.sven.cvms.common.utils.StringUtils;
 import com.sven.cvms.common.utils.bean.BeanUtils;
-import com.sven.cvms.common.utils.file.FileUploadUtils;
-import com.sven.cvms.project.cv.domain.CurriculumVitae;
 import com.sven.cvms.project.cv.service.CurriculumVitaeService;
 import com.sven.cvms.project.interviewee.domain.Interviewee;
+import com.sven.cvms.project.interviewee.domain.IntervieweeQuery;
 import com.sven.cvms.project.interviewee.domain.IntervieweeRegisterDTO;
 import com.sven.cvms.project.interviewee.mapper.IntervieweeMapper;
 import com.sven.cvms.project.interviewee.service.IntervieweeService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 人才库Service业务层处理
@@ -48,18 +51,30 @@ public class IntervieweeServiceImpl implements IntervieweeService {
      */
     @Override
     public Interviewee selectIntervieweeById(Long id) {
-        return intervieweeMapper.selectIntervieweeById(id);
+        return intervieweeMapper.selectById(id);
     }
 
     /**
      * 查询人才库列表
      *
-     * @param interviewee 人才库
+     * @param query 人才库
      * @return 人才库
      */
     @Override
-    public List<Interviewee> selectIntervieweeList(Interviewee interviewee) {
-        return intervieweeMapper.selectIntervieweeList(interviewee);
+    public List<Interviewee> selectIntervieweeList(IntervieweeQuery query) {
+        return intervieweeMapper.selectList(
+                new LambdaQueryWrapper<Interviewee>().like(StringUtils.isNotBlank(query.getName()),
+                                Interviewee::getName, query.getName())
+                        .like(StringUtils.isNotBlank(query.getJob()), Interviewee::getJob, query.getJob())
+                        .eq(StringUtils.isNotBlank(query.getGender()), Interviewee::getGender, query.getGender())
+                        .like(StringUtils.isNotBlank(query.getContact()), Interviewee::getContact, query.getContact())
+                        .in(CollectionUtils.isNotEmpty(query.getDegree()), Interviewee::getDegree, query.getDegree())
+                        .ge(Objects.nonNull(query.getSalaryStart()), Interviewee::getSalary, query.getSalaryStart())
+                        .le(Objects.nonNull(query.getSalaryEnd()), Interviewee::getSalary, query.getSalaryEnd())
+                        .like(StringUtils.isNotBlank(query.getCreateBy()), Interviewee::getCreateBy,
+                                query.getCreateBy())
+                        .ge(Objects.nonNull(query.getAgeStart()), Interviewee::getAge, query.getAgeStart())
+                        .le(Objects.nonNull(query.getAgeEnd()), Interviewee::getAge, query.getAgeEnd()));
     }
 
     /**
@@ -73,18 +88,12 @@ public class IntervieweeServiceImpl implements IntervieweeService {
     public int registerInterviewee(IntervieweeRegisterDTO intervieweeDTO) throws IOException {
         Interviewee interviewee = new Interviewee();
         BeanUtils.copyProperties(intervieweeDTO, interviewee);
-        int insertCount = intervieweeMapper.insertInterviewee(interviewee);
-        if (CollectionUtils.isNotEmpty(intervieweeDTO.getFileList())){
-            for (MultipartFile multipartFile : intervieweeDTO.getFileList()) {
-                CurriculumVitae curriculumVitae = new CurriculumVitae();
-                String saveFileName = FileUploadUtils.upload(multipartFile);
-                curriculumVitae.setIntervieweeId(interviewee.getId());
-                curriculumVitae.setName(multipartFile.getOriginalFilename());
-                curriculumVitae.setFilePath(saveFileName);
-                curriculumVitae.setCreateTime(DateUtils.getNowDate());
-                curriculumVitaeService.insertCurriculumVitae(curriculumVitae);
-            }
-        }
+        interviewee.setCreateBy(SecurityUtils.getUsername());
+        interviewee.setCreateTime(LocalDateTime.now());
+        interviewee.setUpdateBy(SecurityUtils.getUsername());
+        interviewee.setUpdateTime(LocalDateTime.now());
+        int insertCount = intervieweeMapper.insert(interviewee);
+        curriculumVitaeService.upload(intervieweeDTO.getFileList(), interviewee.getId());
         return insertCount;
     }
 
@@ -96,8 +105,9 @@ public class IntervieweeServiceImpl implements IntervieweeService {
      */
     @Override
     public int updateInterviewee(Interviewee interviewee) {
-        interviewee.setUpdateTime(DateUtils.getNowDate());
-        return intervieweeMapper.updateInterviewee(interviewee);
+        interviewee.setUpdateBy(SecurityUtils.getUsername());
+        interviewee.setUpdateTime(LocalDateTime.now());
+        return intervieweeMapper.updateById(interviewee);
     }
 
     /**
@@ -108,7 +118,7 @@ public class IntervieweeServiceImpl implements IntervieweeService {
      */
     @Override
     public int deleteIntervieweeByIds(Long[] ids) {
-        return intervieweeMapper.deleteIntervieweeByIds(ids);
+        return intervieweeMapper.deleteBatchIds(Arrays.asList(ids));
     }
 
     /**
@@ -119,6 +129,6 @@ public class IntervieweeServiceImpl implements IntervieweeService {
      */
     @Override
     public int deleteIntervieweeById(Long id) {
-        return intervieweeMapper.deleteIntervieweeById(id);
+        return intervieweeMapper.deleteById(id);
     }
 }

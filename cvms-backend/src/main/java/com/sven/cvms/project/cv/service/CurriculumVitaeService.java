@@ -1,7 +1,9 @@
 package com.sven.cvms.project.cv.service;
 
 import com.sven.cvms.project.cv.domain.CurriculumVitae;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -36,14 +38,6 @@ public interface CurriculumVitaeService {
     int insertCurriculumVitae(CurriculumVitae curriculumVitae);
 
     /**
-     * 修改简历
-     *
-     * @param curriculumVitae 简历
-     * @return 结果
-     */
-    int updateCurriculumVitae(CurriculumVitae curriculumVitae);
-
-    /**
      * 批量删除简历
      *
      * @param ids 需要删除的简历主键集合
@@ -58,4 +52,13 @@ public interface CurriculumVitaeService {
      * @return 结果
      */
     int deleteCurriculumVitaeById(Long id);
+
+    /**
+     * 上载
+     *
+     * @param fileList      文件列表
+     * @param intervieweeId 面试者id
+     * @return int
+     */
+    int upload(List<MultipartFile> fileList, Long intervieweeId) throws IOException;
 }

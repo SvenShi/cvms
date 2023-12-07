@@ -51,6 +51,9 @@
           <el-form-item label="政治面貌" prop="political">
             <el-input class="input" v-model="form.political" placeholder="请输入政治面貌"/>
           </el-form-item>
+          <el-form-item label="工作年限" prop="workYear">
+            <el-input class="input" v-model.number="form.workYear" placeholder="请输入工作年限"/>
+          </el-form-item>
           <el-form-item label="应聘岗位" prop="job">
             <el-input class="input" v-model="form.job" placeholder="请输入应聘岗位"/>
           </el-form-item>
@@ -74,12 +77,13 @@ export default {
     form: {
       name: '',
       gender: '',
-      age: undefined,
+      age: null,
       birthday: '',
       contact: '',
       email: '',
       degree: '',
       political: '',
+      workYear: null,
       job: '',
       salary: ''
     }
@@ -98,6 +102,10 @@ export default {
           { required: true, message: '年龄不能为空' },
           { type: 'number', message: '年龄必须为数字值' }
         ],
+        workYear:
+          [
+            { type: 'number', message: '工作年限必须为数字值' }
+          ],
         email: [
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ]

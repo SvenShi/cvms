@@ -37,7 +37,7 @@ public class FileUploadUtils {
      * 默认上传的地址
      */
     @Getter
-    private static String defaultBaseDir = CvmsConfig.getProfile();
+    private static String defaultBaseDir = CvmsConfig.getUploadPath();
 
     public static void setDefaultBaseDir(String defaultBaseDir) {
         FileUploadUtils.defaultBaseDir = defaultBaseDir;

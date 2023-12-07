@@ -2,12 +2,11 @@ package com.sven.cvms.project.interviewee.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sven.cvms.framework.aspectj.lang.annotation.Excel;
-import com.sven.cvms.framework.web.domain.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 /**
@@ -18,8 +17,7 @@ import java.time.LocalDate;
  */
 @Data
 @ToString
-@EqualsAndHashCode(callSuper = true)
-public class Interviewee extends BaseEntity {
+public class Interviewee {
 
     /**
      * id
@@ -77,6 +75,12 @@ public class Interviewee extends BaseEntity {
     private String political;
 
     /**
+     * 工作年限
+     */
+    @Excel(name = "工作年限")
+    private Integer workYear;
+
+    /**
      * 应聘岗位
      */
     @Excel(name = "应聘岗位")
@@ -88,5 +92,26 @@ public class Interviewee extends BaseEntity {
     @Excel(name = "期望薪资")
     private Long salary;
 
+    /**
+     * 创建者
+     */
+    private String createBy;
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createTime;
+
+    /**
+     * 更新者
+     */
+    private String updateBy;
+
+    /**
+     * 更新时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updateTime;
 
 }

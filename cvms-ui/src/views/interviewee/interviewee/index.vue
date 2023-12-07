@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm"  size="small" :inline="true" v-show="showSearch"
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch"
              label-width="68px"
     >
       <el-row>
@@ -22,14 +22,13 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label-width="100px" label="生日" prop="birthday">
-          <el-date-picker clearable
-                          v-model="queryParams.birthday"
-                          type="date"
-                          value-format="yyyy-MM-dd"
-                          placeholder="请选择生日"
-          >
-          </el-date-picker>
+        <el-form-item label-width="100px" label="应聘岗位" prop="job">
+          <el-input
+            v-model="queryParams.job"
+            placeholder="请输入应聘岗位"
+            clearable
+            @keyup.enter.native="handleQuery"
+          />
         </el-form-item>
       </el-row>
       <el-row>
@@ -78,15 +77,6 @@
             clearable
             @keyup.enter.native="handleQuery"
           />
-        </el-form-item>
-        <el-form-item label-width="100px" label="创建时间" prop="createTime">
-          <el-date-picker clearable
-                          v-model="queryParams.createTime"
-                          type="date"
-                          value-format="yyyy-MM-dd"
-                          placeholder="请选择创建时间"
-          >
-          </el-date-picker>
         </el-form-item>
         <el-form-item label-width="100px" label="年龄范围" prop="ageStart">
           <el-input
@@ -153,7 +143,9 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="intervieweeList" @selection-change="handleSelectionChange">
+    <el-table :stripe="true" v-loading="loading" :data="intervieweeList"
+            height="50vh"   @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="ID" align="center" prop="id"/>
       <el-table-column label="姓名" align="center" prop="name"/>
@@ -168,17 +160,22 @@
         </template>
       </el-table-column>
       <el-table-column label="年龄" align="center" prop="age"/>
-      <el-table-column label="联系方式" align="center" prop="contact"/>
-      <el-table-column label="邮箱" align="center" prop="email"/>
+      <el-table-column label="联系方式" min-width="150px" align="center" prop="contact"/>
+      <el-table-column label="邮箱" min-width="150px" align="center" prop="email"/>
       <el-table-column label="学历" align="center" prop="degree">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user_sex" :value="scope.row.degree"/>
         </template>
       </el-table-column>
       <el-table-column label="政治面貌" align="center" prop="political"/>
-      <el-table-column label="应聘岗位" align="center" prop="job"/>
+      <el-table-column label="工作年限" align="center" prop="workYear"/>
+      <el-table-column label="应聘岗位"  min-width="150px" align="center" prop="job"/>
       <el-table-column label="期望薪资" align="center" prop="salary"/>
-      <el-table-column label="操作" width="150px" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="创建人" align="center" prop="createBy"/>
+      <el-table-column label="创建时间"  width="200px" align="center" prop="createTime"/>
+      <el-table-column label="修改人" align="center" prop="updateBy"/>
+      <el-table-column label="更新时间"  width="200px" align="center" prop="updateTime"/>
+      <el-table-column fixed="right" label="操作" width="200px" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -217,7 +214,7 @@
     />
 
     <!-- 添加或修改人才库对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :close-on-click-modal="false" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label-width="100px" label="姓名" prop="name">
           <el-input v-model="form.name" placeholder="请输入姓名"/>
@@ -265,6 +262,9 @@
         <el-form-item label-width="100px" label="政治面貌" prop="political">
           <el-input v-model="form.political" placeholder="请输入政治面貌"/>
         </el-form-item>
+        <el-form-item label-width="100px" label="工作年限" prop="workYear">
+          <el-input class="input" v-model.number="form.workYear" placeholder="请输入工作年限"/>
+        </el-form-item>
         <el-form-item label-width="100px" label="应聘岗位" prop="job">
           <el-input v-model="form.job" placeholder="请输入应聘岗位"/>
         </el-form-item>
@@ -277,7 +277,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <el-dialog :title="cvTittle" :visible.sync="cvShow" width="50vw" append-to-body>
+    <el-dialog :title="cvTittle" @close="$refs.cvDialog.clear()" :visible.sync="cvShow" width="50vw" append-to-body>
       <cv-table ref="cvDialog" :interviewee-id="intervieweeId"/>
     </el-dialog>
 
@@ -336,27 +336,39 @@ export default {
         salaryEnd: null,
         ageStart: null,
         ageEnd: null,
+        workYearStart: null,
+        workYearEnd: null,
         createBy: null,
         createTime: null
       },
       // 表单参数
-      form: {},
+      form:
+        {}
+      ,
       // 表单校验
       rules: {
         name: [
           { required: true, message: '姓名不能为空' }
         ],
-        gender: [
-          { required: true, message: '性别不能为空' }
-        ],
-        age: [
-          { required: true, message: '年龄不能为空' },
-          { type: 'number', message: '年龄必须为数字值' }
-        ],
-        email: [
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-        ]
-      },
+        gender:
+          [
+            { required: true, message: '性别不能为空' }
+          ],
+        age:
+          [
+            { required: true, message: '年龄不能为空' },
+            { type: 'number', message: '年龄必须为数字值' }
+          ],
+        workYear:
+          [
+            { type: 'number', message: '工作年限必须为数字值' }
+          ],
+        email:
+          [
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          ]
+      }
+      ,
       // 人才id
       intervieweeId: null
     }
@@ -391,6 +403,7 @@ export default {
         email: null,
         degree: null,
         political: null,
+        workYear: null,
         job: null,
         salary: null,
         createBy: null,
@@ -412,6 +425,8 @@ export default {
       this.queryParams.salaryEnd = null
       this.queryParams.ageStart = null
       this.queryParams.ageEnd = null
+      this.queryParams.workYearStart = null
+      this.queryParams.workYearEnd = null
       this.handleQuery()
     },
     // 多选框选中数据
@@ -435,9 +450,8 @@ export default {
       this.cvTittle = row.name + '简历管理'
       this.intervieweeId = row.id
       this.cvShow = true
-      let that = this;
-      this.$nextTick(()=>{
-        console.log(that.$refs.cvDialog)
+      let that = this
+      this.$nextTick(() => {
         that.$refs.cvDialog.getList()
       })
 

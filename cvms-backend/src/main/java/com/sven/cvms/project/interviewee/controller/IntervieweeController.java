@@ -7,6 +7,7 @@ import com.sven.cvms.framework.web.controller.BaseController;
 import com.sven.cvms.framework.web.domain.AjaxResult;
 import com.sven.cvms.framework.web.page.TableDataInfo;
 import com.sven.cvms.project.interviewee.domain.Interviewee;
+import com.sven.cvms.project.interviewee.domain.IntervieweeQuery;
 import com.sven.cvms.project.interviewee.domain.IntervieweeRegisterDTO;
 import com.sven.cvms.project.interviewee.service.IntervieweeService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,7 +37,7 @@ public class IntervieweeController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('interviewee:interviewee:list')")
     @GetMapping("/list")
-    public TableDataInfo list(Interviewee interviewee) {
+    public TableDataInfo list(IntervieweeQuery interviewee) {
         startPage();
         List<Interviewee> list = intervieweeService.selectIntervieweeList(interviewee);
         return getDataTable(list);
@@ -48,7 +49,7 @@ public class IntervieweeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('interviewee:interviewee:export')")
     @Log(title = "人才库", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, Interviewee interviewee) {
+    public void export(HttpServletResponse response, IntervieweeQuery interviewee) {
         List<Interviewee> list = intervieweeService.selectIntervieweeList(interviewee);
         ExcelUtil<Interviewee> util = new ExcelUtil<Interviewee>(Interviewee.class);
         util.exportExcel(response, list, "人才库数据");

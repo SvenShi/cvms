@@ -9,14 +9,6 @@ export function listCv(query) {
   })
 }
 
-// 查询简历详细
-export function getCv(id) {
-  return request({
-    url: '/cv/' + id,
-    method: 'get'
-  })
-}
-
 // 新增简历
 export function upload(data) {
   return request({

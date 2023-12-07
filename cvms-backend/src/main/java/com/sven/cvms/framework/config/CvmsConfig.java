@@ -1,5 +1,6 @@
 package com.sven.cvms.framework.config;
 
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Component;
  *
  * @author ruoyi
  */
-@Getter
+
+@Data
 @Component
 @ConfigurationProperties(prefix = "cvms")
 public class CvmsConfig {
@@ -76,19 +78,4 @@ public class CvmsConfig {
         CvmsConfig.addressEnabled = addressEnabled;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public void setCopyrightYear(String copyrightYear) {
-        this.copyrightYear = copyrightYear;
-    }
-
-    public void setDemoEnabled(boolean demoEnabled) {
-        this.demoEnabled = demoEnabled;
-    }
 }

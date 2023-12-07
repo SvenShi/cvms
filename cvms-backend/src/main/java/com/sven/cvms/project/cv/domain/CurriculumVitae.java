@@ -1,10 +1,11 @@
 package com.sven.cvms.project.cv.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sven.cvms.framework.aspectj.lang.annotation.Excel;
-import com.sven.cvms.framework.web.domain.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 
 /**
@@ -15,8 +16,7 @@ import lombok.ToString;
  */
 @Data
 @ToString
-@EqualsAndHashCode(callSuper = true)
-public class CurriculumVitae extends BaseEntity {
+public class CurriculumVitae{
 
     /**
      * id
@@ -46,5 +46,16 @@ public class CurriculumVitae extends BaseEntity {
      */
     @Excel(name = "文件保存路径")
     private String filePath;
+
+    /**
+     * 创建者
+     */
+    private String createBy;
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createTime;
 
 }

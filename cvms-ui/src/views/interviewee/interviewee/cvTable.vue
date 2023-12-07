@@ -31,16 +31,10 @@
         <el-table-column type="selection" width="55" align="center"/>
         <el-table-column label="ID" width="100px" align="center" prop="id"/>
         <el-table-column label="简历名称" align="center" prop="name"/>
+        <el-table-column label="上传人" align="center" prop="createBy"/>
+        <el-table-column label="上传时间" align="center" prop="createTime"/>
         <el-table-column label="操作" width="150px" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-delete"
-              @click="handlePreview(scope.row)"
-              v-hasPermi="['cv:cv:preview']"
-            >预览
-            </el-button>
             <el-button
               size="mini"
               type="text"
@@ -63,8 +57,8 @@
     </el-row>
 
 
-    <el-dialog title="上传简历" :visible.sync="showUpload" width="500px" append-to-body>
-      <upload-cv mode="normal" :file-list="fileList" :limit="3 - existFileCount"/>
+    <el-dialog title="上传简历" @close="clear" :visible.sync="showUpload" width="500px" append-to-body>
+      <upload-cv ref="upload" mode="normal" :file-list="fileList" :limit="3 - existFileCount"/>
       <el-row>
         <el-button
           style="float: right"
@@ -97,7 +91,7 @@ export default {
   data() {
     return {
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -127,8 +121,9 @@ export default {
         this.cvList = response.rows
         this.total = response.total
         this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
-      this.loading = false
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -148,13 +143,9 @@ export default {
       }).catch(() => {
       })
     },
-    /** 预览 */
-    handlePreview(row) {
-
-    },
     /** 下载 */
     handleDownload(row) {
-      this.download('cv/download/' + row.id, {}, row.filename)
+      this.$download.download(`cv/download/${row.id}`)
     },
     /**
      * 上传简历
@@ -166,26 +157,39 @@ export default {
      * 上传简历
      */
     updateCv() {
+      this.showUpload = false
       if (this.fileList.length > 0) {
         this.loading = true
         let formData = new FormData()
         formData.append('intervieweeId', this.intervieweeId)
         this.fileList.forEach(item => {
-          formData.append('fileList', item)
+          formData.append('fileList', item.raw)
         })
         upload(formData).then(res => {
+          this.$refs.upload.clear()
+          this.loading = false
+          this.getList()
           if (res.code == 200) {
             this.$modal.msgSuccess('上传成功')
           } else {
             this.$modal.msgError('上传失败')
           }
         }).catch(() => {
+          this.$refs.upload.clear()
+          this.loading = false
           this.$modal.msgError('上传失败')
         })
       } else {
         this.$modal.msgWarning('请先选择文件后上传')
       }
-
+    },
+    /**
+     * 清空上传文件列表
+     */
+    clear() {
+      if (this.$refs.upload) {
+        this.$refs.upload.clear()
+      }
     }
   }
 }

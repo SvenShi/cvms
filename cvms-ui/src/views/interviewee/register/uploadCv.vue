@@ -80,6 +80,9 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    clear(){
+      this.$refs.upload.clearFiles();
     }
   }
 }

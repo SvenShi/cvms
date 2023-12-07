@@ -1,6 +1,7 @@
 package com.sven.cvms.project.interviewee.service;
 
 import com.sven.cvms.project.interviewee.domain.Interviewee;
+import com.sven.cvms.project.interviewee.domain.IntervieweeQuery;
 import com.sven.cvms.project.interviewee.domain.IntervieweeRegisterDTO;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public interface IntervieweeService {
      * @param interviewee 人才库
      * @return 人才库集合
      */
-    List<Interviewee> selectIntervieweeList(Interviewee interviewee);
+    List<Interviewee> selectIntervieweeList(IntervieweeQuery interviewee);
 
     /**
      * 新增人才库

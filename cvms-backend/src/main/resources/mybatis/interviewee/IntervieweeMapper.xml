@@ -3,16 +3,18 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sven.cvms.project.interviewee.mapper.IntervieweeMapper">
-    
+
     <resultMap type="Interviewee" id="IntervieweeResult">
         <result property="id"    column="id"    />
         <result property="name"    column="name"    />
         <result property="gender"    column="gender"    />
         <result property="birthday"    column="birthday"    />
+        <result property="age"    column="age"    />
         <result property="contact"    column="contact"    />
         <result property="email"    column="email"    />
         <result property="degree"    column="degree"    />
         <result property="political"    column="political"    />
+        <result property="workYear"    column="work_year"    />
         <result property="job"    column="job"    />
         <result property="salary"    column="salary"    />
         <result property="createBy"    column="create_by"    />
@@ -22,12 +24,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectIntervieweeVo">
-        select id, name, gender, birthday, contact, email, degree, political, job, salary, create_by, create_time, update_by, update_time from interviewee
+        SELECT
+            id,
+            name,
+            gender,
+            birthday,
+            age,
+            contact,
+            email,
+            degree,
+            political,
+            work_year,
+            job,
+            salary,
+            create_by,
+            create_time,
+            update_by,
+            update_time
+        FROM interviewee
     </sql>
 
     <select id="selectIntervieweeList" parameterType="Interviewee" resultMap="IntervieweeResult">
         <include refid="selectIntervieweeVo"/>
-        <where>  
+        <where>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
             <if test="birthday != null "> and birthday = #{birthday}</if>
@@ -41,22 +60,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null "> and create_time = #{createTime}</if>
         </where>
     </select>
-    
+
     <select id="selectIntervieweeById" parameterType="Long" resultMap="IntervieweeResult">
         <include refid="selectIntervieweeVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertInterviewee" parameterType="Interviewee" useGeneratedKeys="true" keyProperty="id">
         insert into interviewee
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">name,</if>
             <if test="gender != null">gender,</if>
             <if test="birthday != null">birthday,</if>
+            <if test="age != null">age,</if>
             <if test="contact != null">contact,</if>
             <if test="email != null">email,</if>
             <if test="degree != null">degree,</if>
             <if test="political != null">political,</if>
+            <if test="workYear != null">work_year,</if>
             <if test="job != null">job,</if>
             <if test="salary != null">salary,</if>
             <if test="createBy != null">create_by,</if>
@@ -68,10 +89,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null">#{name},</if>
             <if test="gender != null">#{gender},</if>
             <if test="birthday != null">#{birthday},</if>
+            <if test="age != null">#{age},</if>
             <if test="contact != null">#{contact},</if>
             <if test="email != null">#{email},</if>
             <if test="degree != null">#{degree},</if>
             <if test="political != null">#{political},</if>
+            <if test="workYear != null">#{workYear},</if>
             <if test="job != null">#{job},</if>
             <if test="salary != null">#{salary},</if>
             <if test="createBy != null">#{createBy},</if>
@@ -87,10 +110,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null">name = #{name},</if>
             <if test="gender != null">gender = #{gender},</if>
             <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="age != null">age = #{age},</if>
             <if test="contact != null">contact = #{contact},</if>
             <if test="email != null">email = #{email},</if>
             <if test="degree != null">degree = #{degree},</if>
             <if test="political != null">political = #{political},</if>
+            <if test="workYear != null">work_year = #{workYear},</if>
             <if test="job != null">job = #{job},</if>
             <if test="salary != null">salary = #{salary},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
@@ -106,7 +131,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteIntervieweeByIds" parameterType="String">
-        delete from interviewee where id in 
+        delete from interviewee where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
