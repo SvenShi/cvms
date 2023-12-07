@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div>
     <el-container style="align-items: center">
       <el-card style="width: 100%; align-items: center" v-if="mode == 'card'">
         <div slot="header" class="clearfix">上传简历</div>

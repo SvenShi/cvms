@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
-    <el-container style="align-items: center" v-loading="loading">
-
+    <el-container style="align-items: center;height: 100%" v-loading="loading">
       <el-header class="header">
         <el-steps :active="step">
           <el-step title="开始" icon="el-icon-warning-outline"></el-step>
@@ -12,7 +11,7 @@
       </el-header>
       <el-main class="main">
         <register-start @click="move(1)" :step="step" v-show="step == 1"/>
-        <interviewee-form ref="interForm" v-show="step == 2" :form="form"/>
+        <interviewee-form  ref="interForm" v-show="step == 2" :form="form"/>
         <upload-cv :file-list="fileList" v-show="step == 3"/>
         <register-complete :type="submitMessage.type" :detail="submitMessage.detail" @click="reset" v-show="step == 4"/>
       </el-main>
@@ -33,8 +32,6 @@ import RegisterStart from '@/views/interviewee/register/registerStart.vue'
 import UploadCv from '@/views/interviewee/register/uploadCv.vue'
 import RegisterComplete from '@/views/interviewee/register/registerComplete.vue'
 import { registerInterviewee } from '@/api/interviewee/interviewee'
-import item from '@/layout/components/Sidebar/Item.vue'
-import { float } from 'quill/ui/icons'
 
 export default {
   name: 'Register',
@@ -153,14 +150,15 @@ export default {
 .header {
   width: 40%;
   min-width: 500px;
-  height: 30px !important;
+  height: 60px !important;
 }
 
 .main {
-  height: calc(100vh - 155px);
+  height: calc(100vh - 200px);
   width: 40%;
   min-width: 500px;
 }
+
 
 .input {
   width: 40% !important;

@@ -4,103 +4,97 @@
              label-width="68px"
     >
       <el-row>
-        <el-form-item label-width="100px" label="姓名" prop="name">
-          <el-input
-            v-model="queryParams.name"
-            placeholder="请输入姓名"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item label-width="100px" label="性别" prop="gender">
-          <el-select v-model="queryParams.gender" placeholder="请选择性别" clearable>
-            <el-option
-              v-for="dict in dict.type.sys_user_sex"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
+        <el-col :span="8">
+          <el-form-item label-width="100px" label="姓名" prop="name">
+            <el-input
+              v-model="queryParams.name"
+              placeholder="请输入姓名"
+              clearable
+              @keyup.enter.native="handleQuery"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item label-width="100px" label="应聘岗位" prop="job">
-          <el-input
-            v-model="queryParams.job"
-            placeholder="请输入应聘岗位"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-form-item>
-      </el-row>
-      <el-row>
-        <el-form-item label-width="100px" label="联系方式" prop="contact">
-          <el-input
-            v-model="queryParams.contact"
-            placeholder="请输入联系方式"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item label-width="100px" label="学历" prop="degree">
-          <el-select v-model="queryParams.degree" multiple placeholder="请选择学历" clearable>
-            <el-option
-              v-for="dict in dict.type.sys_user_sex"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
+          </el-form-item>
+          <el-form-item label-width="100px" label="联系方式" prop="contact">
+            <el-input
+              v-model="queryParams.contact"
+              placeholder="请输入联系方式"
+              clearable
+              @keyup.enter.native="handleQuery"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item label-width="100px" label="期望薪资范围" prop="salaryStart">
-          <el-input
-            v-model.number="queryParams.salaryStart"
-            clearable
-            placeholder="期望薪资"
-            @keyup.enter.native="handleQuery"
-            style="width: 165px; margin-right: 5px"
-          />
-          -
-          <el-input
-            v-model.number="queryParams.salaryEnd"
-            clearable
-            placeholder="期望薪资"
-            @keyup.enter.native="handleQuery"
-            style="width: 165px; margin-left: 5px"
-          />
-        </el-form-item>
+          </el-form-item>
+          <el-form-item label-width="100px" label="创建人" prop="createBy">
+            <el-input
+              v-model="queryParams.createBy"
+              placeholder="请输入创建人"
+              clearable
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label-width="100px" label="性别" prop="gender">
+            <el-select v-model="queryParams.gender" placeholder="请选择性别" clearable>
+              <el-option
+                v-for="dict in dict.type.sys_user_sex"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label-width="100px" label="学历" prop="degree">
+            <el-select v-model="queryParams.degree" multiple placeholder="请选择学历" clearable>
+              <el-option
+                v-for="dict in dict.type.sys_user_sex"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label-width="100px" label="年龄范围" prop="ageStart">
+            <el-input
+              v-model.number="queryParams.ageStart"
+              clearable
+              placeholder="年龄"
+              @keyup.enter.native="handleQuery"
+              style="width: 165px; margin-right: 5px"
+            />
+            -
+            <el-input
+              v-model.number="queryParams.ageEnd"
+              clearable
+              placeholder="年龄"
+              @keyup.enter.native="handleQuery"
+              style="width: 165px; margin-left: 5px"
+            />
+          </el-form-item>
+          <el-form-item label-width="100px" label="期望薪资范围" prop="salaryStart">
+            <el-input
+              v-model.number="queryParams.salaryStart"
+              clearable
+              placeholder="期望薪资"
+              @keyup.enter.native="handleQuery"
+              style="width: 165px; margin-right: 5px"
+            />
+            -
+            <el-input
+              v-model.number="queryParams.salaryEnd"
+              clearable
+              placeholder="期望薪资"
+              @keyup.enter.native="handleQuery"
+              style="width: 165px; margin-left: 5px"
+            />
+          </el-form-item>
+          <el-form-item style="float: right">
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row>
 
-        <el-form-item label-width="100px" label="创建人" prop="createBy">
-          <el-input
-            v-model="queryParams.createBy"
-            placeholder="请输入创建人"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item label-width="100px" label="年龄范围" prop="ageStart">
-          <el-input
-            v-model.number="queryParams.ageStart"
-            clearable
-            placeholder="年龄"
-            @keyup.enter.native="handleQuery"
-            style="width: 165px; margin-right: 5px"
-          />
-          -
-          <el-input
-            v-model.number="queryParams.ageEnd"
-            clearable
-            placeholder="年龄"
-            @keyup.enter.native="handleQuery"
-            style="width: 165px; margin-left: 5px"
-          />
-        </el-form-item>
-      </el-row>
-      <el-row>
-        <div style="float: right;margin-bottom: 18px">
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-        </div>
       </el-row>
     </el-form>
 
@@ -144,7 +138,7 @@
     </el-row>
 
     <el-table :stripe="true" v-loading="loading" :data="intervieweeList"
-            height="50vh"   @selection-change="handleSelectionChange"
+              height="50vh" @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="ID" align="center" prop="id"/>
@@ -169,12 +163,12 @@
       </el-table-column>
       <el-table-column label="政治面貌" align="center" prop="political"/>
       <el-table-column label="工作年限" align="center" prop="workYear"/>
-      <el-table-column label="应聘岗位"  min-width="150px" align="center" prop="job"/>
+      <el-table-column label="应聘岗位" min-width="150px" align="center" prop="job"/>
       <el-table-column label="期望薪资" align="center" prop="salary"/>
       <el-table-column label="创建人" align="center" prop="createBy"/>
-      <el-table-column label="创建时间"  width="200px" align="center" prop="createTime"/>
+      <el-table-column label="创建时间" width="200px" align="center" prop="createTime"/>
       <el-table-column label="修改人" align="center" prop="updateBy"/>
-      <el-table-column label="更新时间"  width="200px" align="center" prop="updateTime"/>
+      <el-table-column label="更新时间" width="200px" align="center" prop="updateTime"/>
       <el-table-column fixed="right" label="操作" width="200px" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -286,10 +280,10 @@
 
 <script>
 import {
-  listInterviewee,
-  getInterviewee,
-  delInterviewee,
   addInterviewee,
+  delInterviewee,
+  getInterviewee,
+  listInterviewee,
   updateInterviewee
 } from '@/api/interviewee/interviewee'
 import CvTable from '@/views/interviewee/interviewee/cvTable.vue'
@@ -511,9 +505,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.el-form-item {
-  margin-right: calc((100vw - 1200px) / 4) !important;
-}
 
 .el-date-editor {
   width: 205px !important;
