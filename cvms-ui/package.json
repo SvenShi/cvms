@@ -1,8 +1,8 @@
 {
-  "name": "ruoyi",
+  "name": "cvms",
   "version": "3.8.6",
-  "description": "若依管理系统",
-  "author": "若依",
+  "description": "简历管理系统",
+  "author": "Sven",
   "license": "MIT",
   "scripts": {
     "dev": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
