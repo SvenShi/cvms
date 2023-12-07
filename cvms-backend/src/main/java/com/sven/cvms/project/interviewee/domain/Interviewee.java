@@ -1,6 +1,8 @@
 package com.sven.cvms.project.interviewee.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sven.cvms.common.enums.Degree;
+import com.sven.cvms.common.enums.Gender;
 import com.sven.cvms.framework.aspectj.lang.annotation.Excel;
 import lombok.Data;
 import lombok.ToString;
@@ -34,7 +36,7 @@ public class Interviewee {
      * 性别
      */
     @Excel(name = "性别")
-    private String gender;
+    private Gender gender;
 
     /**
      * 生日
@@ -66,7 +68,7 @@ public class Interviewee {
      * 学历
      */
     @Excel(name = "学历")
-    private Long degree;
+    private Degree degree;
 
     /**
      * 政治面貌

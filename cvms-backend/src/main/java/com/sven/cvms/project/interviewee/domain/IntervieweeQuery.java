@@ -1,5 +1,8 @@
 package com.sven.cvms.project.interviewee.domain;
 
+import com.fasterxml.jackson.databind.annotation.EnumNaming;
+import com.sven.cvms.common.enums.Degree;
+import com.sven.cvms.common.enums.Gender;
 import lombok.Data;
 import lombok.ToString;
 
@@ -25,7 +28,7 @@ public class IntervieweeQuery {
     /**
      * 性别
      */
-    private String gender;
+    private Gender gender;
 
     private Integer ageStart;
 
@@ -41,7 +44,7 @@ public class IntervieweeQuery {
     /**
      * 学历
      */
-    private List<Long> degree;
+    private List<Degree> degree;
 
     /**
      * 工作年限

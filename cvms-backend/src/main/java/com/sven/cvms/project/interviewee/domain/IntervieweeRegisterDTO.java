@@ -1,6 +1,8 @@
 package com.sven.cvms.project.interviewee.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sven.cvms.common.enums.Degree;
+import com.sven.cvms.common.enums.Gender;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +32,7 @@ public class IntervieweeRegisterDTO {
     /**
      * 性别
      */
-    private String gender;
+    private Gender gender;
 
     /**
      * 生日
@@ -51,7 +53,7 @@ public class IntervieweeRegisterDTO {
     /**
      * 学历
      */
-    private Long degree;
+    private Degree degree;
 
     /**
      * 政治面貌

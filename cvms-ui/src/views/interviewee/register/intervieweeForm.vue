@@ -12,7 +12,7 @@
               <el-form-item label="性别" prop="gender">
                 <el-select v-model="form.gender" placeholder="性别" style="width: 80px">
                   <el-option
-                    v-for="dict in dict.type.sys_user_sex"
+                    v-for="dict in dict.type.user_gender"
                     :key="dict.value"
                     :label="dict.label"
                     :value="dict.value"
@@ -45,10 +45,10 @@
               <el-form-item label="学历" prop="degree">
                 <el-select v-model="form.degree" placeholder="学历" style="width: 100px">
                   <el-option
-                    v-for="dict in dict.type.sys_user_sex"
+                    v-for="dict in dict.type.user_degree"
                     :key="dict.value"
                     :label="dict.label"
-                    :value="parseInt(dict.value)"
+                    :value="dict.value"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -77,7 +77,7 @@
 
 export default {
   name: 'IntervieweeForm',
-  dicts: ['sys_user_sex'],
+  dicts: ['user_gender','user_degree'],
   props: {
     // 表单参数
     form: {

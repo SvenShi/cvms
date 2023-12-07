@@ -34,7 +34,7 @@
           <el-form-item label-width="100px" label="性别" prop="gender">
             <el-select v-model="queryParams.gender" placeholder="请选择性别" clearable>
               <el-option
-                v-for="dict in dict.type.sys_user_sex"
+                v-for="dict in dict.type.user_gender"
                 :key="dict.value"
                 :label="dict.label"
                 :value="dict.value"
@@ -44,7 +44,7 @@
           <el-form-item label-width="100px" label="学历" prop="degree">
             <el-select v-model="queryParams.degree" multiple placeholder="请选择学历" clearable>
               <el-option
-                v-for="dict in dict.type.sys_user_sex"
+                v-for="dict in dict.type.user_degree"
                 :key="dict.value"
                 :label="dict.label"
                 :value="dict.value"
@@ -145,7 +145,7 @@
       <el-table-column label="姓名" align="center" prop="name"/>
       <el-table-column label="性别" align="center" prop="gender">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_user_sex" :value="scope.row.gender"/>
+          <dict-tag :options="dict.type.user_gender" :value="scope.row.gender"/>
         </template>
       </el-table-column>
       <el-table-column label="生日" align="center" prop="birthday" width="180">
@@ -158,7 +158,7 @@
       <el-table-column label="邮箱" min-width="150px" align="center" prop="email"/>
       <el-table-column label="学历" align="center" prop="degree">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_user_sex" :value="scope.row.degree"/>
+          <dict-tag :options="dict.type.user_degree" :value="scope.row.degree"/>
         </template>
       </el-table-column>
       <el-table-column label="政治面貌" align="center" prop="political"/>
@@ -216,7 +216,7 @@
         <el-form-item label-width="100px" label="性别" prop="gender">
           <el-select v-model="form.gender" placeholder="请选择性别">
             <el-option
-              v-for="dict in dict.type.sys_user_sex"
+              v-for="dict in dict.type.user_gender"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
@@ -246,10 +246,10 @@
         <el-form-item label-width="100px" label="学历" prop="degree">
           <el-select v-model="form.degree" placeholder="请选择学历">
             <el-option
-              v-for="dict in dict.type.sys_user_sex"
+              v-for="dict in dict.type.user_degree"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -291,7 +291,7 @@ import CvTable from '@/views/interviewee/interviewee/cvTable.vue'
 export default {
   name: 'Interviewee',
   components: { CvTable },
-  dicts: ['sys_user_sex'],
+  dicts: ['user_gender','user_degree'],
   data() {
     return {
       // 遮罩层

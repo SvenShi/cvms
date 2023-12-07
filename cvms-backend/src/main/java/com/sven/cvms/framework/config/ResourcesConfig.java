@@ -2,9 +2,10 @@ package com.sven.cvms.framework.config;
 
 import com.sven.cvms.common.constant.Constants;
 import com.sven.cvms.framework.interceptor.RepeatSubmitInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sven.cvms.framework.web.converter.StringToEnumConverterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -19,8 +20,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class ResourcesConfig implements WebMvcConfigurer {
-    @Autowired
-    private RepeatSubmitInterceptor repeatSubmitInterceptor;
+    private final RepeatSubmitInterceptor repeatSubmitInterceptor;
+
+    public ResourcesConfig(RepeatSubmitInterceptor repeatSubmitInterceptor) {
+        this.repeatSubmitInterceptor = repeatSubmitInterceptor;
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+       registry.addConverterFactory(new StringToEnumConverterFactory());
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

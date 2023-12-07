@@ -66,7 +66,7 @@ public class IntervieweeServiceImpl implements IntervieweeService {
                 new LambdaQueryWrapper<Interviewee>().like(StringUtils.isNotBlank(query.getName()),
                                 Interviewee::getName, query.getName())
                         .like(StringUtils.isNotBlank(query.getJob()), Interviewee::getJob, query.getJob())
-                        .eq(StringUtils.isNotBlank(query.getGender()), Interviewee::getGender, query.getGender())
+                        .eq(Objects.nonNull(query.getGender()), Interviewee::getGender, query.getGender())
                         .like(StringUtils.isNotBlank(query.getContact()), Interviewee::getContact, query.getContact())
                         .in(CollectionUtils.isNotEmpty(query.getDegree()), Interviewee::getDegree, query.getDegree())
                         .ge(Objects.nonNull(query.getSalaryStart()), Interviewee::getSalary, query.getSalaryStart())
